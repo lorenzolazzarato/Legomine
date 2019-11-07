@@ -1,0 +1,2 @@
+include ':app', ':legodroid'
+rootProject.name='Legomine'
