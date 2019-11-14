@@ -1,6 +1,5 @@
 package it.unive.dais.legodroid.lib.util;
 
-
 import androidx.annotation.NonNull;
 
 /**
