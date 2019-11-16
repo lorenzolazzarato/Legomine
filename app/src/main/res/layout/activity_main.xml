@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="160dp"
         android:layout_margin="10dp"
-        android:text="Premi START per partire"
+        android:text="Start effettua collegamento ed avvia movimento."
         tools:ignore="HardcodedText" />
 
     <View

@@ -39,7 +39,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView textView;
     private final Map<String, Object> statusMap = new HashMap<>();
     @Nullable
-    private TachoMotor motor;   // this is a class field because we need to access it from multiple methods
+    private TachoMotor motor1;   // this is a class field because we need to access it from multiple methods
+    private TachoMotor motor2;
     private TachoMotor pinza;
 
 
@@ -82,9 +83,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // quick wrapper for accessing field 'motor' only when not-null; also ignores any exception thrown
-    private void applyMotor(@NonNull ThrowingConsumer<TachoMotor, Throwable> f) {
-        if (motor != null)
-            Prelude.trap(() -> f.call(motor));
+    private void applyMotor1(@NonNull ThrowingConsumer<TachoMotor, Throwable> f) {
+        if (motor1 != null)
+            Prelude.trap(() -> f.call(motor1));
+    }
+    private void applyMotor2(@NonNull ThrowingConsumer<TachoMotor, Throwable> f) {
+        if (motor2 != null)
+            Prelude.trap(() -> f.call(motor2));
     }
 
     private void applyPinza(@NonNull ThrowingConsumer<TachoMotor, Throwable> f) {
@@ -115,16 +120,21 @@ public class MainActivity extends AppCompatActivity {
             // alternatively with plain EV3
 //            startButton.setOnClickListener(v -> Prelude.trap(() -> ev3.run(this::legoMain)));
 
-            Button pinzaButton = findViewById(R.id.pinzaButton);
-            // pinzaButton.setOnClickListener(v -> Prelude.trap(() -> ev3.run(this::legoMainCustomApi, MyCustomApi::new)));
+
+            //funzione da implementare, test di chiusura pinza a comando
+            // Button pinzaButton = findViewById(R.id.pinzaButton);
+
+            //pinzaButton.setOnClickListener(v -> Prelude.trap(() -> ev3.run(this::legoMainCustomApi, MyCustomApi::new)));
             // alternatively with plain EV3
 //            startButton.setOnClickListener(v -> Prelude.trap(() -> ev3.run(this::legoMain)));
 
-            setupEditable(R.id.powerEdit, (x) -> applyMotor((m) -> {
+
+            //da fixare la sincronizzazione dei due motori
+            setupEditable(R.id.powerEdit, (x) -> applyMotor1((m) -> {
                 m.setPower(x);
                 m.start();      // setPower() and setSpeed() require call to start() afterwards
             }));
-            setupEditable(R.id.speedEdit, (x) -> applyMotor((m) -> {
+            setupEditable(R.id.speedEdit, (x) -> applyMotor1((m) -> {
                 m.setSpeed(x);
                 m.start();
             }));
@@ -146,11 +156,14 @@ public class MainActivity extends AppCompatActivity {
         final GyroSensor gyroSensor = api.getGyroSensor(EV3.InputPort._4);
 
         // get motors
-        motor = api.getTachoMotor(EV3.OutputPort.B);
+        // ASSUMO MOTORI DESTRO SU B, SINISTRO SU C, PINZA SU A
+        motor1 = api.getTachoMotor(EV3.OutputPort.B);
+        motor2 = api.getTachoMotor(EV3.OutputPort.C);
         pinza = api.getTachoMotor(EV3.OutputPort.A);
-        // motorL = api.getTachoMotor(EV3.OutputPort.C);
+
         try {
-            applyMotor(TachoMotor::resetPosition);
+            applyMotor1(TachoMotor::resetPosition);
+            applyMotor2(TachoMotor::resetPosition);
 
             while (!api.ev3.isCancelled()) {    // loop until cancellation signal is fired
                 try {
@@ -176,20 +189,23 @@ public class MainActivity extends AppCompatActivity {
                     Future<Boolean> touched = touchSensor.getPressed();
                     updateStatus(touchSensor, "touch", touched.get() ? 1 : 0);
 
-                    Future<Float> pos = motor.getPosition();
-                    updateStatus(motor, "motor position", pos.get());
+                    Future<Float> pos = motor1.getPosition();
+                    updateStatus(motor1, "motor position", pos.get());
 
-                    Future<Float> speed = motor.getSpeed();
-                    updateStatus(motor, "motor speed", speed.get());
+                    Future<Float> speed = motor1.getSpeed();
+                    updateStatus(motor1, "motor speed", speed.get());
 
-                    motor.setStepSpeed(35, 0, 2000, 0, true);
-                    motor.waitCompletion();
+
+
+                    motor1.setStepSpeed(35, 0, 2000, 0, true);
+                    motor2.setStepSpeed(35, 0, 2000, 0, true);
+                    motor1.waitCompletion();
+
                    // motor.setStepSpeed(-35, 0, 2000, 0, true);
                    // Log.d(TAG, "waiting for long motor operation completed...");
                    // motor.waitUntilReady();
                     Log.d(TAG, "long motor operation completed");
 
-                    pinza.setStepSpeed(10, 0, 100, 0, true);
 
                 } catch (IOException | InterruptedException | ExecutionException e) {
                     e.printStackTrace();
@@ -197,7 +213,9 @@ public class MainActivity extends AppCompatActivity {
             }
 
         } finally {
-            applyMotor(TachoMotor::stop);
+            applyMotor1(TachoMotor::stop);
+            applyMotor2(TachoMotor::stop);
+            applyPinza(TachoMotor::stop);
         }
     }
 
