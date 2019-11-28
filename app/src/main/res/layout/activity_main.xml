@@ -6,19 +6,10 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/errorView"
         android:layout_width="match_parent"
-        android:layout_height="160dp"
-        android:layout_margin="10dp"
-        android:text="Start effettua collegamento ed avvia movimento."
-        tools:ignore="HardcodedText" />
-
-    <View
-        android:id="@+id/colorView"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="#ff00ff"
-        />
+        android:layout_height="76dp"
+        android:text="Qui verranno visualizzati gli errori" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -41,55 +32,68 @@
             android:text="Stop"
             tools:ignore="HardcodedText" />
 
-        <Button
-            android:id="@+id/pinzaButton"
-            android:layout_width="107dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="CHIUDI" />
-
     </LinearLayout>
 
 
-
-    <LinearLayout
+    <Button
+        android:id="@+id/apriPinza"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:text="Apri pinza" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Motor Power:"
-            tools:ignore="HardcodedText" />
-
-        <EditText
-            android:id="@+id/powerEdit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="numberSigned"
-            android:importantForAutofill="no" />
-
-    </LinearLayout>
-
-
-    <LinearLayout
+    <Button
+        android:id="@+id/chiudiPinza"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="Chiudi pinza" />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="165dp"
+        android:gravity="center"
         android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Motor Speed:"
-            tools:ignore="HardcodedText" />
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
 
-        <EditText
-            android:id="@+id/speedEdit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="numberSigned"
-            android:importantForAutofill="no" />
+            <Button
+                android:id="@+id/muoviAvanti"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="^" />
+        </TableRow>
 
-    </LinearLayout>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/muoviSx"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="sx" />
+
+            <Button
+                android:id="@+id/muoviDx"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="dx" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/muoviIndietro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="v" />
+        </TableRow>
+
+    </TableLayout>
 </LinearLayout>

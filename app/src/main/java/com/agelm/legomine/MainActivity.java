@@ -1,10 +1,12 @@
 package com.agelm.legomine;
 
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -39,38 +41,18 @@ public class MainActivity extends AppCompatActivity {
     private TextView textView;
     private final Map<String, Object> statusMap = new HashMap<>();
     @Nullable
-    private TachoMotor motor1;   // this is a class field because we need to access it from multiple methods
-    private TachoMotor motor2;
+    private TachoMotor ruota_dx;   // this is a class field because we need to access it from multiple methods
+    private TachoMotor ruota_sx;
     private TachoMotor pinza;
+    private TextView errorView;
+
+    private Button openConn, closeConn, apriPinza, chiudiPinza;
 
 
     private void updateStatus(@NonNull Plug p, String key, Object value) {
         Log.d(TAG, String.format("%s: %s: %s", p, key, value));
         statusMap.put(key, value);
-        runOnUiThread(() -> textView.setText(statusMap.toString()));
-    }
-
-    private void setupEditable(@IdRes int id, Consumer<Integer> f) {
-        EditText e = findViewById(id);
-        e.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                int x = 0;
-                try {
-                    x = Integer.parseInt(s.toString());
-                } catch (NumberFormatException ignored) {
-                }
-                f.call(x);
-            }
-        });
+        //runOnUiThread(() -> textView.setText(statusMap.toString()));
     }
 
     private static class MyCustomApi extends EV3.Api {
@@ -83,13 +65,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // quick wrapper for accessing field 'motor' only when not-null; also ignores any exception thrown
-    private void applyMotor1(@NonNull ThrowingConsumer<TachoMotor, Throwable> f) {
-        if (motor1 != null)
-            Prelude.trap(() -> f.call(motor1));
+    private void applyRuotaSx(@NonNull ThrowingConsumer<TachoMotor, Throwable> f) {
+        if (ruota_sx != null)
+            Prelude.trap(() -> f.call(ruota_sx));
     }
-    private void applyMotor2(@NonNull ThrowingConsumer<TachoMotor, Throwable> f) {
-        if (motor2 != null)
-            Prelude.trap(() -> f.call(motor2));
+    private void applyRuotaDx(@NonNull ThrowingConsumer<TachoMotor, Throwable> f) {
+        if (ruota_dx != null)
+            Prelude.trap(() -> f.call(ruota_dx));
     }
 
     private void applyPinza(@NonNull ThrowingConsumer<TachoMotor, Throwable> f) {
@@ -101,14 +83,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        textView = findViewById(R.id.textView);
+        errorView = findViewById((R.id.errorView));
+        EV3 ev3;
 
         try {
-            BluetoothConnection.BluetoothChannel conn = new BluetoothConnection("AGELM").connect(); // replace with your own brick name
-
-            // connect to EV3 via bluetooth
-            GenEV3<MyCustomApi> ev3 = new GenEV3<>(conn);
-//            EV3 ev3 = new EV3(conn);  // alternatively an EV3 subclass
+            BluetoothConnection conn = new BluetoothConnection("AGELM");
+            BluetoothConnection.BluetoothChannel channel = conn.connect();
+            ev3 = new EV3(channel);
 
             Button stopButton = findViewById(R.id.stopButton);
             stopButton.setOnClickListener(v -> {
@@ -116,54 +97,96 @@ public class MainActivity extends AppCompatActivity {
             });
 
             Button startButton = findViewById(R.id.startButton);
-            startButton.setOnClickListener(v -> Prelude.trap(() -> ev3.run(this::legoMainCustomApi, MyCustomApi::new)));
-            // alternatively with plain EV3
-//            startButton.setOnClickListener(v -> Prelude.trap(() -> ev3.run(this::legoMain)));
+            startButton.setOnClickListener(v -> Prelude.trap(() -> ev3.run(this::legoMain)));
 
-
-            //funzione da implementare, test di chiusura pinza a comando
-            // Button pinzaButton = findViewById(R.id.pinzaButton);
-
-            //pinzaButton.setOnClickListener(v -> Prelude.trap(() -> ev3.run(this::legoMainCustomApi, MyCustomApi::new)));
-            // alternatively with plain EV3
-//            startButton.setOnClickListener(v -> Prelude.trap(() -> ev3.run(this::legoMain)));
-
-
-            //da fixare la sincronizzazione dei due motori
-            setupEditable(R.id.powerEdit, (x) -> applyMotor1((m) -> {
-                m.setPower(x);
-                m.start();      // setPower() and setSpeed() require call to start() afterwards
-            }));
-            setupEditable(R.id.speedEdit, (x) -> applyMotor1((m) -> {
-                m.setSpeed(x);
-                m.start();
-            }));
         } catch (IOException e) {
-            Log.e(TAG, "fatal error: cannot connect to EV3");
-            e.printStackTrace();
+            errorView.setText(e.toString());
         }
     }
 
     // main program executed by EV3
 
+    @SuppressLint("ClickableViewAccessibility")
     private void legoMain(EV3.Api api) {
-        final String TAG = Prelude.ReTAG("legoMain");
+        // pulsanti per il movimento (DEBUG)
+        Button apriPinza = findViewById(R.id.apriPinza);
+        Button chiudiPinza = findViewById(R.id.chiudiPinza);
+        Button avantiButt = findViewById(R.id.muoviAvanti);
+        Button sxButt = findViewById(R.id.muoviSx);
+        Button dxButt = findViewById(R.id.muoviDx);
+        Button indietroButt = findViewById(R.id.muoviIndietro);
 
-        // get sensors
-        final LightSensor lightSensor = api.getLightSensor(EV3.InputPort._3);
-        final UltrasonicSensor ultraSensor = api.getUltrasonicSensor(EV3.InputPort._2);
-        final TouchSensor touchSensor = api.getTouchSensor(EV3.InputPort._1);
-        final GyroSensor gyroSensor = api.getGyroSensor(EV3.InputPort._4);
+        // sensori
+        final GyroSensor gyroSensor = api.getGyroSensor(EV3.InputPort._1);
 
-        // get motors
-        // ASSUMO MOTORI DESTRO SU B, SINISTRO SU C, PINZA SU A
-        motor1 = api.getTachoMotor(EV3.OutputPort.B);
-        motor2 = api.getTachoMotor(EV3.OutputPort.C);
+        // motori sulle corrispondenti porte
+        ruota_dx = api.getTachoMotor(EV3.OutputPort.B);
+        ruota_sx = api.getTachoMotor(EV3.OutputPort.C);
         pinza = api.getTachoMotor(EV3.OutputPort.A);
 
         try {
-            applyMotor1(TachoMotor::resetPosition);
-            applyMotor2(TachoMotor::resetPosition);
+            applyRuotaSx(TachoMotor::resetPosition);
+            applyRuotaDx(TachoMotor::resetPosition);
+
+            apriPinza.setOnTouchListener((view, motionEvent) -> {
+                try {
+                    pinza.setPolarity(TachoMotor.Polarity.FORWARD);
+                } catch (IOException e) {
+                    errorView.setText(e.toString());
+                }
+                switch(motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        applyPinza(p -> {
+                            p.setPower(50);
+                            p.start();
+                        });
+                        return true;
+                    case MotionEvent.ACTION_UP:
+                        applyPinza(TachoMotor::stop);
+                        return true;
+                }
+                return true;
+            });
+
+            chiudiPinza.setOnTouchListener((view, motionEvent) -> {
+                try {
+                    pinza.setPolarity(TachoMotor.Polarity.BACKWARDS);
+                } catch (IOException e) {
+                    errorView.setText(e.toString());
+                }
+                switch(motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        applyPinza(p -> {
+                            p.setPower(50);
+                            p.start();
+                        });
+                        return true;
+                    case MotionEvent.ACTION_UP:
+                        applyPinza(TachoMotor::stop);
+                        return true;
+                }
+                return true;
+            });
+
+            avantiButt.setOnTouchListener((view, motionEvent) -> {
+                switch(motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        Prelude.trap(() -> {
+                            ruota_sx.setStepSync(50, 0,0, true);
+                            ruota_dx.setStepSync(50, 0,0, true);
+                            //ruota_sx.start();
+                            //ruota_dx.start();
+                        });
+                        return true;
+                    case MotionEvent.ACTION_UP:
+                        Prelude.trap(() -> {
+                            ruota_sx.stop();
+                            ruota_dx.stop();
+                        });
+                        return true;
+                }
+                return true;
+            });
 
             while (!api.ev3.isCancelled()) {    // loop until cancellation signal is fired
                 try {
@@ -171,50 +194,14 @@ public class MainActivity extends AppCompatActivity {
                     Future<Float> gyro = gyroSensor.getAngle();
                     updateStatus(gyroSensor, "gyro angle", gyro.get()); // call get() for actually reading the value - this may block!
 
-                    Future<Short> ambient = lightSensor.getAmbient();
-                    updateStatus(lightSensor, "ambient", ambient.get());
-
-                    Future<Short> reflected = lightSensor.getReflected();
-                    updateStatus(lightSensor, "reflected", reflected.get());
-
-                    Future<Float> distance = ultraSensor.getDistance();
-                    updateStatus(ultraSensor, "distance", distance.get());
-
-                    Future<LightSensor.Color> colf = lightSensor.getColor();
-                    LightSensor.Color col = colf.get();
-                    updateStatus(lightSensor, "color", col);
-                    // when you need to deal with the UI, you must do it within a lambda passed to runOnUiThread()
-                    runOnUiThread(() -> findViewById(R.id.colorView).setBackgroundColor(col.toARGB32()));
-
-                    Future<Boolean> touched = touchSensor.getPressed();
-                    updateStatus(touchSensor, "touch", touched.get() ? 1 : 0);
-
-                    Future<Float> pos = motor1.getPosition();
-                    updateStatus(motor1, "motor position", pos.get());
-
-                    Future<Float> speed = motor1.getSpeed();
-                    updateStatus(motor1, "motor speed", speed.get());
-
-
-
-                    motor1.setStepSpeed(35, 0, 2000, 0, true);
-                    motor2.setStepSpeed(35, 0, 2000, 0, true);
-                    motor1.waitCompletion();
-
-                   // motor.setStepSpeed(-35, 0, 2000, 0, true);
-                   // Log.d(TAG, "waiting for long motor operation completed...");
-                   // motor.waitUntilReady();
-                    Log.d(TAG, "long motor operation completed");
-
-
                 } catch (IOException | InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 }
             }
 
         } finally {
-            applyMotor1(TachoMotor::stop);
-            applyMotor2(TachoMotor::stop);
+            applyRuotaSx(TachoMotor::stop);
+            applyRuotaDx(TachoMotor::stop);
             applyPinza(TachoMotor::stop);
         }
     }
@@ -226,6 +213,5 @@ public class MainActivity extends AppCompatActivity {
         // stub the other main
         legoMain(api);
     }
-
 
 }
