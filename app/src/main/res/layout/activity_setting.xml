@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/settingTW"
+            android:layout_width="229dp"
+            android:layout_height="65dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="13dp"
+            android:layout_marginEnd="162dp"
+            android:layout_marginBottom="651dp"
+            android:fontFamily="@font/amaranth_bold"
+            android:text="Setting"
+            android:textColor="#000000"
+            android:textSize="40sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/connettiB"
+            android:layout_width="190dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="110dp"
+            android:layout_marginTop="91dp"
+            android:layout_marginEnd="110dp"
+            android:layout_marginBottom="592dp"
+            android:background="#FFFFFF"
+            android:backgroundTint="#652B79B7"
+            android:text="Connetti"
+            android:textAllCaps="false"
+            android:textColor="#3c4752"
+            android:textSize="21sp" />
+
+        <TextView
+            android:id="@+id/selectRadioTW"
+            android:layout_width="wrap_content"
+            android:layout_height="49dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="176dp"
+            android:layout_marginEnd="162dp"
+            android:layout_marginBottom="505dp"
+            android:fontFamily="@font/amaranth_bold"
+            android:text="Seleziona la prova:"
+            android:textColor="#000000"
+            android:textSize="24sp" />
+
+        <RadioButton
+            android:id="@+id/prova1RB"
+            android:layout_width="182dp"
+            android:layout_height="50dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="145dp"
+            android:layout_marginTop="220dp"
+            android:layout_marginEnd="107dp"
+            android:layout_marginBottom="440dp"
+            android:text="Prova1"
+            android:textColor="#3c4752"
+            android:textSize="18sp" />
+
+        <RadioButton
+            android:id="@+id/prova2RB"
+            android:layout_width="182dp"
+            android:layout_height="49dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="145dp"
+            android:layout_marginTop="270dp"
+            android:layout_marginEnd="112dp"
+            android:layout_marginBottom="380dp"
+            android:text="Prova2"
+            android:textColor="#3c4752"
+            android:textSize="18sp" />
+
+        <RadioButton
+            android:id="@+id/prova3RB"
+            android:layout_width="182dp"
+            android:layout_height="49dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="145dp"
+            android:layout_marginTop="320dp"
+            android:layout_marginEnd="110dp"
+            android:layout_marginBottom="320dp"
+            android:text="Prova3"
+            android:textColor="#3c4752"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/chiaveTB"
+            android:layout_width="213dp"
+            android:layout_height="56dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="99dp"
+            android:layout_marginTop="449dp"
+            android:layout_marginEnd="99dp"
+            android:layout_marginBottom="226dp"
+            android:ems="10"
+            android:inputType="textPassword"
+            android:textColor="#3c4752" />
+
+        <TextView
+            android:id="@+id/criptazioneTW"
+            android:layout_width="369dp"
+            android:layout_height="42dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="412dp"
+            android:layout_marginEnd="22dp"
+            android:layout_marginBottom="277dp"
+            android:fontFamily="@font/amaranth_bold"
+            android:text="Inserisci la chiave di criptazione:"
+            android:textColor="#000000"
+            android:textSize="21sp" />
+
+        <Button
+            android:id="@+id/avvioB"
+            android:layout_width="190dp"
+            android:layout_height="110dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="543dp"
+            android:layout_marginEnd="100dp"
+            android:layout_marginBottom="78dp"
+            android:backgroundTint="#652B79B7"
+            android:text="Avvio"
+            android:textAllCaps="false"
+            android:textColor="#3c4752"
+            android:textSize="21sp" />
+
+    </RelativeLayout>
+</LinearLayout>
