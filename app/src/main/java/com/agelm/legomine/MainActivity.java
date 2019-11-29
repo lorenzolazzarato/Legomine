@@ -128,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
             applyRuotaSx(TachoMotor::resetPosition);
             applyRuotaDx(TachoMotor::resetPosition);
 
+            // PINZA
             apriPinza.setOnTouchListener((view, motionEvent) -> {
                 try {
                     pinza.setPolarity(TachoMotor.Polarity.FORWARD);
@@ -167,15 +168,75 @@ public class MainActivity extends AppCompatActivity {
                 }
                 return true;
             });
-
+            // AVANTI
             avantiButt.setOnTouchListener((view, motionEvent) -> {
                 switch(motionEvent.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         Prelude.trap(() -> {
-                            ruota_sx.setStepSync(50, 0,0, true);
-                            ruota_dx.setStepSync(50, 0,0, true);
-                            //ruota_sx.start();
-                            //ruota_dx.start();
+                            ruota_sx.setPower(80);
+                            ruota_dx.setPower(80);
+                            ruota_sx.start();
+                            ruota_dx.start();
+                        });
+                        return true;
+                    case MotionEvent.ACTION_UP:
+                        Prelude.trap(() -> {
+                            ruota_sx.stop();
+                            ruota_dx.stop();
+                        });
+                        return true;
+                }
+                return true;
+            });
+            // INDIETRO
+            indietroButt.setOnTouchListener((view, motionEvent) -> {
+                switch(motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        Prelude.trap(() -> {
+                            ruota_sx.setPower(-80);
+                            ruota_dx.setPower(-80);
+                            ruota_sx.start();
+                            ruota_dx.start();
+                        });
+                        return true;
+                    case MotionEvent.ACTION_UP:
+                        Prelude.trap(() -> {
+                            ruota_sx.stop();
+                            ruota_dx.stop();
+                        });
+                        return true;
+                }
+                return true;
+            });
+            // DX
+            dxButt.setOnTouchListener((view, motionEvent) -> {
+                switch(motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        Prelude.trap(() -> {
+                            ruota_sx.setPower(80);
+                            ruota_dx.setPower(0);
+                            ruota_sx.start();
+                            ruota_dx.start();
+                        });
+                        return true;
+                    case MotionEvent.ACTION_UP:
+                        Prelude.trap(() -> {
+                            ruota_sx.stop();
+                            ruota_dx.stop();
+                        });
+                        return true;
+                }
+                return true;
+            });
+            // SX
+            sxButt.setOnTouchListener((view, motionEvent) -> {
+                switch(motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        Prelude.trap(() -> {
+                            ruota_sx.setPower(0);
+                            ruota_dx.setPower(80);
+                            ruota_sx.start();
+                            ruota_dx.start();
                         });
                         return true;
                     case MotionEvent.ACTION_UP:
