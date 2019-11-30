@@ -21,6 +21,9 @@ import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import org.opencv.android.OpenCVLoader;
+
 import it.unive.dais.legodroid.lib.EV3;
 import it.unive.dais.legodroid.lib.GenEV3;
 import it.unive.dais.legodroid.lib.comm.BluetoothConnection;
@@ -85,6 +88,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         errorView = findViewById((R.id.errorView));
         EV3 ev3;
+
+        // Caricamento OpenCV
+        if (!OpenCVLoader.initDebug()) {
+            Log.e("AndroidIngSwOpenCV", "Unable to load OpenCV");
+        } else {
+            Log.d("AndroidIngSwOpenCV", "OpenCV loaded");
+        }
 
         try {
             BluetoothConnection conn = new BluetoothConnection("AGELM");
@@ -248,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 return true;
             });
-
+/*
             while (!api.ev3.isCancelled()) {    // loop until cancellation signal is fired
                 try {
                     // values returned by getters are boxed within a special Future object
@@ -259,7 +269,7 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-
+*/
         } finally {
             applyRuotaSx(TachoMotor::stop);
             applyRuotaDx(TachoMotor::stop);
