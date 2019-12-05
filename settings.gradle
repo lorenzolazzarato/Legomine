@@ -1,2 +1,2 @@
-include ':app', ':legodroid'
+include ':app', ':legodroid', 'opencv'
 rootProject.name='Legomine'
