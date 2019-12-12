@@ -22,12 +22,7 @@ public class Function {
     private GyroSensor gyroSensor;
 
     public Function(){
-        try {
-            BluetoothConnection conn = new BluetoothConnection("AGELM");
-            BluetoothConnection.BluetoothChannel channel = conn.connect();
-            ev3 = new EV3(channel);
-        } catch (IOException e) {
-        }
+
     }
 
     public void giroscopio(){
