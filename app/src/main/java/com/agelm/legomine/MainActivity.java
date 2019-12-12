@@ -23,6 +23,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.opencv.android.OpenCVLoader;
+import org.opencv.engine.OpenCVEngineInterface;
 
 import it.unive.dais.legodroid.lib.EV3;
 import it.unive.dais.legodroid.lib.GenEV3;
@@ -95,6 +96,8 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Log.d("AndroidIngSwOpenCV", "OpenCV loaded");
         }
+
+
 
         try {
             BluetoothConnection conn = new BluetoothConnection("AGELM");
