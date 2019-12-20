@@ -1,17 +1,12 @@
 package com.agelm.legomine;
 
 import android.util.Log;
-import android.widget.Button;
 
 import org.opencv.android.OpenCVLoader;
 
-import java.io.IOException;
-
 import it.unive.dais.legodroid.lib.EV3;
-import it.unive.dais.legodroid.lib.comm.BluetoothConnection;
 import it.unive.dais.legodroid.lib.plugs.GyroSensor;
 import it.unive.dais.legodroid.lib.plugs.TachoMotor;
-import it.unive.dais.legodroid.lib.util.Prelude;
 
 public class Function {
 

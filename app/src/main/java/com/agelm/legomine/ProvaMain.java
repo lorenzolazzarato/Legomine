@@ -37,7 +37,7 @@ public class ProvaMain extends AppCompatActivity {
                 Prova2 p = new Prova2(ev3);
             }
             else{
-                Prova3 p = new Prova3(ev3);
+                Prova3 p = new Prova3  (ev3);
             }
         } catch (IOException e) {
         }
