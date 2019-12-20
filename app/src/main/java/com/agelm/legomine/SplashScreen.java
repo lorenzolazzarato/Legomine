@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.widget.ImageView;
 
 
-public class SplashScreen extends Activity { //
+public class SplashScreen extends Activity { // x
 
     int SPLASH_TIME_OUT = 3000;
     @Override
