@@ -2,6 +2,7 @@ package com.agelm.legomine;
 
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -50,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
     private TachoMotor pinza;
     private TextView errorView;
 
-    private Button openConn, closeConn, apriPinza, chiudiPinza;
 
 
     private void updateStatus(@NonNull Plug p, String key, Object value) {
@@ -96,6 +96,12 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Log.d("AndroidIngSwOpenCV", "OpenCV loaded");
         }
+
+        Button prova1 = findViewById(R.id.apriProva1);
+        prova1.setOnClickListener((x) -> {
+            Intent intent = new Intent(this, Prova1.class);
+            startActivity(intent);
+        });
 
 
 
@@ -273,6 +279,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 */
+
+
         } finally {
             applyRuotaSx(TachoMotor::stop);
             applyRuotaDx(TachoMotor::stop);

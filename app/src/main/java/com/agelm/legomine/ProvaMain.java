@@ -31,7 +31,7 @@ public class ProvaMain extends AppCompatActivity {
             ev3 = new EV3(channel);
 
             if(findViewById(R.id.prova1RB).isSelected()){
-                Prova1 p = new Prova1(ev3);
+                //Prova1 p = new Prova1(ev3);
             }
             else if(findViewById(R.id.prova2RB).isSelected()){
                 Prova2 p = new Prova2(ev3);
