@@ -1,6 +1,10 @@
 package com.agelm.legomine;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -42,5 +46,48 @@ public class ProvaMain extends AppCompatActivity {
         } catch (IOException e) {
         }
 
+    }
+
+
+    public void settingProva1(View view){
+        TextView t = findViewById(R.id.numeroPallineTW);
+        t.setTextColor(Color.parseColor("#000000"));
+
+        t = findViewById(R.id.criptazioneTW);
+        t.setTextColor(Color.parseColor("#3C4752"));
+
+        EditText e = findViewById(R.id.numPallineTB);
+        e.setEnabled(true);
+
+        e = findViewById(R.id.chiaveTB);
+        e.setEnabled(false);
+    }
+
+    public void settingProva2(View view){
+        TextView t = findViewById(R.id.numeroPallineTW);
+        t.setTextColor(Color.parseColor("#3C4752"));
+
+        t = findViewById(R.id.criptazioneTW);
+        t.setTextColor(Color.parseColor("#3C4752"));
+
+        EditText e = findViewById(R.id.numPallineTB);
+        e.setEnabled(false);
+
+        e = findViewById(R.id.chiaveTB);
+        e.setEnabled(false);
+    }
+
+    public void settingProva3(View view){
+        TextView t = findViewById(R.id.numeroPallineTW);
+        t.setTextColor(Color.parseColor("#3C4752"));
+
+        t = findViewById(R.id.criptazioneTW);
+        t.setTextColor(Color.parseColor("#000000"));
+
+        EditText e = findViewById(R.id.numPallineTB);
+        e.setEnabled(false);
+
+        e = findViewById(R.id.chiaveTB);
+        e.setEnabled(true);
     }
 }
