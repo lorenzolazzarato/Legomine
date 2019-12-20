@@ -5,8 +5,9 @@
 
 
     <RelativeLayout
+        android:id="@+id/view"
         android:layout_width="match_parent"
-        android:layout_height="800dp">
+        android:layout_height="1070dp">
 
         <TextView
             android:id="@+id/settingTW"
@@ -28,7 +29,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="110dp"
             android:layout_marginTop="91dp"
-            android:layout_marginEnd="110dp"
             android:layout_marginBottom="592dp"
             android:background="#FFFFFF"
             android:backgroundTint="#652B79B7"
@@ -50,53 +50,43 @@
             android:textColor="#000000"
             android:textSize="24sp" />
 
-        <RadioButton
-            android:id="@+id/prova1RB"
+        <RadioGroup
+            android:id="@+id/rg"
             android:layout_width="182dp"
-            android:layout_height="50dp"
+            android:layout_height="200dp"
             android:layout_marginStart="145dp"
-            android:layout_marginTop="220dp"
-            android:layout_marginEnd="107dp"
-            android:layout_marginBottom="440dp"
-            android:text="Prova1"
-            android:textColor="#3c4752"
-            android:textSize="18sp" />
+            android:layout_marginTop="220dp">
 
-        <RadioButton
-            android:id="@+id/prova2RB"
-            android:layout_width="182dp"
-            android:layout_height="49dp"
-            android:layout_marginStart="145dp"
-            android:layout_marginTop="270dp"
-            android:layout_marginEnd="112dp"
-            android:layout_marginBottom="380dp"
-            android:text="Prova2"
-            android:textColor="#3c4752"
-            android:textSize="18sp" />
+            <RadioButton
+                android:id="@+id/prova1RB"
+                android:layout_width="182dp"
+                android:layout_height="50dp"
+                android:onClick="settingProva1"
+                android:text="Prova1"
+                android:textColor="#3c4752"
+                android:textSize="18sp" />
 
-        <RadioButton
-            android:id="@+id/prova3RB"
-            android:layout_width="182dp"
-            android:layout_height="49dp"
-            android:layout_marginStart="145dp"
-            android:layout_marginTop="320dp"
-            android:layout_marginEnd="110dp"
-            android:layout_marginBottom="320dp"
-            android:text="Prova3"
-            android:textColor="#3c4752"
-            android:textSize="18sp" />
+            <RadioButton
+                android:id="@+id/prova2RB"
+                android:layout_width="182dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:onClick="settingProva2"
+                android:text="Prova2"
+                android:textColor="#3c4752"
+                android:textSize="18sp" />
 
-        <EditText
-            android:id="@+id/chiaveTB"
-            android:layout_width="213dp"
-            android:layout_height="56dp"
-            android:layout_marginStart="99dp"
-            android:layout_marginTop="449dp"
-            android:layout_marginEnd="99dp"
-            android:layout_marginBottom="226dp"
-            android:ems="10"
-            android:inputType="textPassword"
-            android:textColor="#3c4752" />
+            <RadioButton
+                android:id="@+id/prova3RB"
+                android:layout_width="182dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:onClick="settingProva3"
+                android:text="Prova3"
+                android:textColor="#3c4752"
+                android:textSize="18sp" />
+
+        </RadioGroup>
 
         <TextView
             android:id="@+id/criptazioneTW"
@@ -104,21 +94,156 @@
             android:layout_height="42dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="412dp"
-            android:layout_marginEnd="22dp"
-            android:layout_marginBottom="277dp"
             android:fontFamily="@font/amaranth_bold"
             android:text="Inserisci la chiave di criptazione:"
+            android:textColor="#3c4752"
+            android:textSize="21sp"/>
+
+        <EditText
+            android:id="@+id/chiaveTB"
+            android:layout_width="213dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="99dp"
+            android:layout_marginTop="449dp"
+            android:ems="10"
+            android:enabled="false"
+            android:inputType="textPassword"
+            android:textColor="#3c4752" />
+
+        <TextView
+            android:id="@+id/numeroPallineTW"
+            android:layout_width="369dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="545dp"
+            android:fontFamily="@font/amaranth_bold"
+            android:text="Inserisci il numero di mine da raccogliere:"
+            android:textColor="#3c4752"
+            android:textSize="21sp"/>
+
+        <EditText
+            android:id="@+id/numPallineTB"
+            android:layout_width="213dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="99dp"
+            android:layout_marginTop="592dp"
+            android:ems="10"
+            android:enabled="false"
+            android:inputType="text"
+            android:textColor="#3c4752" />
+
+        <TextView
+            android:id="@+id/dimCampoTW"
+            android:layout_width="369dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="678dp"
+            android:fontFamily="@font/amaranth_bold"
+            android:text="Inserisci la grandezza del campo:"
             android:textColor="#000000"
             android:textSize="21sp" />
+
+        <TextView
+            android:id="@+id/dimXTW"
+            android:layout_width="80dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="70dp"
+            android:layout_marginTop="725dp"
+            android:fontFamily="@font/amaranth_bold"
+            android:text="X"
+            android:textColor="#000000"
+            android:textSize="25sp" />
+
+        <EditText
+            android:id="@+id/dimXTB"
+            android:layout_width="80dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="99dp"
+            android:layout_marginTop="713dp"
+            android:ems="10"
+            android:inputType="text"
+            android:textColor="#3c4752" />
+
+        <TextView
+            android:id="@+id/dimYTW"
+            android:layout_width="80dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="220dp"
+            android:layout_marginTop="725dp"
+            android:fontFamily="@font/amaranth_bold"
+            android:text="Y"
+            android:textColor="#000000"
+            android:textSize="25sp" />
+
+        <EditText
+            android:id="@+id/dimYTB"
+            android:layout_width="80dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="249dp"
+            android:layout_marginTop="713dp"
+            android:ems="10"
+            android:inputType="text"
+            android:textColor="#3c4752" />
+
+        <TextView
+            android:id="@+id/posizioneTW"
+            android:layout_width="369dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="805dp"
+            android:fontFamily="@font/amaranth_bold"
+            android:text="Inserisci la posizione iniziale:"
+            android:textColor="#000000"
+            android:textSize="21sp" />
+
+        <TextView
+            android:id="@+id/posXTW"
+            android:layout_width="80dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="70dp"
+            android:layout_marginTop="850dp"
+            android:fontFamily="@font/amaranth_bold"
+            android:text="X"
+            android:textColor="#000000"
+            android:textSize="25sp" />
+
+        <EditText
+            android:id="@+id/posXTB"
+            android:layout_width="80dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="99dp"
+            android:layout_marginTop="838dp"
+            android:ems="10"
+            android:inputType="text"
+            android:textColor="#3c4752" />
+
+        <TextView
+            android:id="@+id/posYTW"
+            android:layout_width="80dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="220dp"
+            android:layout_marginTop="850dp"
+            android:fontFamily="@font/amaranth_bold"
+            android:text="Y"
+            android:textColor="#000000"
+            android:textSize="25sp" />
+
+        <EditText
+            android:id="@+id/posYTB"
+            android:layout_width="80dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="249dp"
+            android:layout_marginTop="838dp"
+            android:ems="10"
+            android:inputType="text"
+            android:textColor="#3c4752" />
 
         <Button
             android:id="@+id/avvioB"
             android:layout_width="190dp"
             android:layout_height="110dp"
             android:layout_marginStart="100dp"
-            android:layout_marginTop="543dp"
-            android:layout_marginEnd="100dp"
-            android:layout_marginBottom="78dp"
+            android:layout_marginTop="920dp"
             android:backgroundTint="#652B79B7"
             android:text="Avvio"
             android:textAllCaps="false"
