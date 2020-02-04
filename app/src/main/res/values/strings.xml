@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Legomine</string>
+    <string name="Prova1">Prima Prova</string>
+    <string name="Prova2">Seconda Prova</string>
+    <string name="Prova3">Terza Prova</string>
+    <string name="DebugManuale">Debug Manuale</string>
 </resources>

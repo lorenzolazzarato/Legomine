@@ -2,20 +2,13 @@ package com.agelm.legomine;
 
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -30,7 +23,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.opencv.android.OpenCVLoader;
-import org.opencv.engine.OpenCVEngineInterface;
 
 import it.unive.dais.legodroid.lib.EV3;
 import it.unive.dais.legodroid.lib.GenEV3;
@@ -46,6 +38,7 @@ import it.unive.dais.legodroid.lib.util.Prelude;
 import it.unive.dais.legodroid.lib.util.ThrowingConsumer;
 
 public class MainActivity extends AppCompatActivity {
+
     private static final String TAG = Prelude.ReTAG("MainActivity");
 
     private TextView textView;
@@ -56,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private TachoMotor pinza;
     private TextView errorView;
 
+    private Button openConn, closeConn, apriPinza, chiudiPinza;
 
 
     private void updateStatus(@NonNull Plug p, String key, Object value) {
@@ -101,14 +95,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Log.d("AndroidIngSwOpenCV", "OpenCV loaded");
         }
-
-        Button prova1 = findViewById(R.id.apriProva1);
-        prova1.setOnClickListener((x) -> {
-            Intent intent = new Intent(this, Prova1.class);
-            startActivity(intent);
-        });
-
-
 
         try {
             BluetoothConnection conn = new BluetoothConnection("AGELM");
@@ -284,8 +270,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 */
-
-
         } finally {
             applyRuotaSx(TachoMotor::stop);
             applyRuotaDx(TachoMotor::stop);
