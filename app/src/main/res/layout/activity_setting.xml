@@ -32,6 +32,7 @@
             android:layout_marginBottom="592dp"
             android:background="#FFFFFF"
             android:backgroundTint="#652B79B7"
+            android:onClick="connetti"
             android:text="Connetti"
             android:textAllCaps="false"
             android:textColor="#3c4752"
@@ -61,6 +62,7 @@
                 android:id="@+id/prova1RB"
                 android:layout_width="182dp"
                 android:layout_height="50dp"
+                android:checked="true"
                 android:onClick="settingProva1"
                 android:text="Prova1"
                 android:textColor="#3c4752"
@@ -118,7 +120,7 @@
             android:layout_marginTop="545dp"
             android:fontFamily="@font/amaranth_bold"
             android:text="Inserisci il numero di mine da raccogliere:"
-            android:textColor="#3c4752"
+            android:textColor="#000000"
             android:textSize="21sp"/>
 
         <EditText
@@ -128,7 +130,7 @@
             android:layout_marginStart="99dp"
             android:layout_marginTop="592dp"
             android:ems="10"
-            android:enabled="false"
+            android:enabled="true"
             android:inputType="text"
             android:textColor="#3c4752" />
 
@@ -245,6 +247,8 @@
             android:layout_marginStart="100dp"
             android:layout_marginTop="920dp"
             android:backgroundTint="#652B79B7"
+            android:clickable="false"
+            android:onClick="avvio"
             android:text="Avvio"
             android:textAllCaps="false"
             android:textColor="#3c4752"

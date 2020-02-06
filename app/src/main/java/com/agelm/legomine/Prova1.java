@@ -50,7 +50,7 @@ public class Prova1 extends AppCompatActivity {
             Log.d(TAG, "OpenCV loaded");
         }
 
-        // Configura l'elemento della camera
+        /*Configura l'elemento della camera*/
         mOpenCvCameraView = findViewById(R.id.OpenCvView);
         mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
         mOpenCvCameraView.setMaxFrameSize(640, 480);
@@ -65,11 +65,10 @@ public class Prova1 extends AppCompatActivity {
                 Log.d(TAG, "Camera Stopped");
             }
 
-            // Viene eseguito ad ogni frame, con inputFrame l'immagine corrente.
-            // Recupera la posizione delle palline.
+            /*Viene eseguito ad ogni frame, con inputFrame l'immagine corrente*/
             @Override
             public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
-                // Salva il frame corrente su un oggetto Mat, ossia una matrice bitmap
+                /*Salva il frame corrente su un oggetto Mat, ossia una matrice bitmap*/
                 Mat frame = inputFrame.rgba();
 
                 BallFinder ballFinder = new BallFinder(frame, true);
@@ -93,7 +92,7 @@ public class Prova1 extends AppCompatActivity {
             }
         });
 
-        // Abilita la visualizzazione dell'immagine sullo schermo
+        /*Abilita la visualizzazione dell'immagine sullo schermo*/
         mOpenCvCameraView.enableView();
 
         // recupera le palline
