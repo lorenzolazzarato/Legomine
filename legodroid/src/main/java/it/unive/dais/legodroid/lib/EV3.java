@@ -3,6 +3,7 @@ package it.unive.dais.legodroid.lib;
 import android.annotation.SuppressLint;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
@@ -30,7 +31,7 @@ import it.unive.dais.legodroid.lib.util.Function;
  * Specialized EV3 class with default Api.
  * Use this commodity class when you do not need to extend the Api class.
  */
-public class EV3 extends GenEV3<EV3.Api> {
+public class EV3 extends GenEV3<EV3.Api> implements Serializable {
     /**
      * Facility constructor. Creates a SpooledAsyncChannel automatically with the given synchrounous channel
      *

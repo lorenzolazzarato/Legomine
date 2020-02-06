@@ -24,10 +24,12 @@ import it.unive.dais.legodroid.lib.util.Prelude;
 public class Prova1 extends AppCompatActivity {
 
 
-    EV3 ev3 = Robot.getInstance();
-    TachoMotor ruota_sx = Robot.getRuota_sx();
-    TachoMotor ruota_dx = Robot.getRuota_dx();
-    TachoMotor pinza = Robot.getPinza();
+    private EV3 ev3;
+    private TachoMotor ruota_sx;
+    private TachoMotor ruota_dx;
+    private TachoMotor pinza;
+    private int posx, posy, num;
+    private ArrayList<Integer> matrice;
 
     private String TAG = "Prova 1";
 
@@ -38,12 +40,25 @@ public class Prova1 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prova1);
 
+        ev3 = (EV3) getIntent().getSerializableExtra("Ev3");
+
+        int x = getIntent().getIntExtra("dimx",12),y  = getIntent().getIntExtra("dimy",12);
+
+        matrice = new ArrayList<>(Collections.nCopies(x*y,0));
+
+        posx = getIntent().getIntExtra("posx",0);
+        posy = getIntent().getIntExtra("posy",0);
+        num = getIntent().getIntExtra("num",0);
+
+
+
+
         final Ball[] target = new Ball[1];
 
-        // Imposta lo schermo a sempre acceso
+        /*Imposta lo schermo a sempre acceso*/
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        // Carica le librerie di OpenCV in maniera sincrona
+        /*Carica le librerie di OpenCV in maniera sincrona*/
         if (!OpenCVLoader.initDebug()) {
             Log.e(TAG, "Unable to load OpenCV");
         } else {
@@ -81,8 +96,8 @@ public class Prova1 extends AppCompatActivity {
                     Log.e("ball", String.format("X:%f Y:%f Rad:%f Col:%s", b.center.x, b.center.y, b.radius, b.color));
 
                 }
-                // ordina le palle per dimensione del raggio, in modo da andare a prendere prima
-                // quella più vicina (si spera)
+                /*ordina le palle per dimensione del raggio, in modo da andare a prendere prima*/
+                /*quella più vicina (si spera)*/
                 Comparator<Ball> ballComparator = (ball1, ball2) -> (int)(ball1.radius - ball2.radius);
                 f.sort(ballComparator);
                 Collections.reverse(f);
@@ -95,12 +110,12 @@ public class Prova1 extends AppCompatActivity {
         /*Abilita la visualizzazione dell'immagine sullo schermo*/
         mOpenCvCameraView.enableView();
 
-        // recupera le palline
-        while(true) { // da definire fino a quando
-            // metto la palla al centro della visione del robot.
+        /*recupera le palline*/
+        while(true) { /*da definire fino a quando*/
+            /*metto la palla al centro della visione del robot.*/
             if(target[0].center.y >= 240) {
                 while(target[0].center.y > 240) {
-                    // gira il robot a sx
+                    /*gira il robot a sx*/
                     Prelude.trap(() -> {
                         ruota_dx.setPower(20);
                         ruota_dx.start();
@@ -109,7 +124,7 @@ public class Prova1 extends AppCompatActivity {
                 Prelude.trap(() -> ruota_dx.stop());
             } else {
                 while(target[0].center.y < 240) {
-                    //gira il robot a dx
+                    /*gira il robot a dx*/
                     Prelude.trap(() -> {
                         ruota_sx.setPower(20);
                         ruota_sx.start();
@@ -117,8 +132,8 @@ public class Prova1 extends AppCompatActivity {
                 }
                 Prelude.trap(() -> ruota_sx.stop());
             }
-            // la palla è centrata, vai dritto
-            // come lo fermi quando arriva davanti alla palla?
+            /*la palla è centrata, vai dritto*/
+            /*come lo fermi quando arriva davanti alla palla?*/
             Prelude.trap(() -> {
                 ruota_sx.setPower(50);
                 ruota_dx.setPower(50);

@@ -1,5 +1,7 @@
 package com.agelm.legomine;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -36,6 +38,7 @@ public class ProvaMain extends AppCompatActivity {
             BluetoothConnection conn = new BluetoothConnection("AGELM");
             BluetoothConnection.BluetoothChannel channel = conn.connect();
             ev3 = new EV3(channel);
+
             Button b = findViewById(R.id.connettiB);
             b.setClickable(false);
             b = findViewById(R.id.avvioB);
@@ -53,19 +56,28 @@ public class ProvaMain extends AppCompatActivity {
         px = findViewById(R.id.posXTB);
         py = findViewById(R.id.posYTB);
 
-
-
-
-        if(findViewById(R.id.prova1RB).isSelected()){
-            EditText n = findViewById(R.id.numPallineTB);
-            //Prova1 p = new Prova1(ev3);
-        }
-        else if(findViewById(R.id.prova2RB).isSelected()){
-            Prova2 p = new Prova2(ev3);
-        }
-        else{
-            EditText c = findViewById(R.id.chiaveTB);
-            Prova3 p = new Prova3  (ev3);
+        if(contrText(dx) && contrText(dy) && contrText(px) && contrText(py)){
+            if(findViewById(R.id.prova1RB).isSelected()){
+                EditText n = findViewById(R.id.numPallineTB);
+                if(contrText(n)){
+                    int dimx = parse(dx), dimy = parse(dy), posx = parse(px), posy = parse(py), num = parse(n);
+                    Intent intent = new Intent(this, Prova1.class);
+                    intent.putExtra("dimx",dimx);
+                    intent.putExtra("dimy",dimy);
+                    intent.putExtra("posx",posx);
+                    intent.putExtra("posy",posy);
+                    intent.putExtra("num",num);
+                    intent.putExtra("Ev3",ev3);
+                    startActivity(intent);
+                }
+            }
+            else if(findViewById(R.id.prova2RB).isSelected()){
+                Prova2 p = new Prova2(ev3);
+            }
+            else{
+                EditText c = findViewById(R.id.chiaveTB);
+                Prova3 p = new Prova3  (ev3);
+            }
         }
     }
 
@@ -109,5 +121,25 @@ public class ProvaMain extends AppCompatActivity {
 
         e = findViewById(R.id.chiaveTB);
         e.setEnabled(true);
+    }
+
+    private int parse(EditText e){
+        int i = Integer.parseInt(e.getText().toString());
+        return i;
+    }
+
+    private boolean contrText(EditText e){
+        if(e.getText().equals("")) {
+            e.setError("Campo obbligatorio");
+            return false;
+        }
+        try{
+            int i = Integer.parseInt(e.getText().toString());
+        }catch (Exception ex){
+            e.setError("Il testo inserito deve essere un numero intero positivo");
+            return false;
+        }
+
+        return true;
     }
 }

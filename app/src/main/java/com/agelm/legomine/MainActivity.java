@@ -70,8 +70,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle savedIstanceState) {
+        super.onCreate(savedIstanceState);
         setContentView(R.layout.activity_main);
         errorView = findViewById((R.id.errorView));
         EV3 ev3;
