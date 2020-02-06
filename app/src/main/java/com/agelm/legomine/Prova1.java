@@ -27,7 +27,7 @@ public class Prova1 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prova1);
 
-        // Imposta lo schermo a sempre acceso
+        /*Imposta lo schermo a sempre acceso*/
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         // Carica le librerie di OpenCV in maniera sincrona
@@ -37,7 +37,7 @@ public class Prova1 extends AppCompatActivity {
             Log.d(TAG, "OpenCV loaded");
         }
 
-        // Configura l'elemento della camera
+        /*Configura l'elemento della camera*/
         mOpenCvCameraView = findViewById(R.id.OpenCvView);
         mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
         mOpenCvCameraView.setMaxFrameSize(640, 480);
@@ -52,10 +52,10 @@ public class Prova1 extends AppCompatActivity {
                 Log.d(TAG, "Camera Stopped");
             }
 
-            // Viene eseguito ad ogni frame, con inputFrame l'immagine corrente
+            /*Viene eseguito ad ogni frame, con inputFrame l'immagine corrente*/
             @Override
             public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
-                // Salva il frame corrente su un oggetto Mat, ossia una matrice bitmap
+                /*Salva il frame corrente su un oggetto Mat, ossia una matrice bitmap*/
                 Mat frame = inputFrame.rgba();
 
                 BallFinder ballFinder = new BallFinder(frame, true);
@@ -73,7 +73,7 @@ public class Prova1 extends AppCompatActivity {
             }
         });
 
-        // Abilita la visualizzazione dell'immagine sullo schermo
+        /*Abilita la visualizzazione dell'immagine sullo schermo*/
         mOpenCvCameraView.enableView();
     }
 }
