@@ -73,14 +73,24 @@ public class Prova1 extends AppCompatActivity {
         Thread t = new ThreadOpenCv(mOpenCvCameraView,c);
         t.start();
 
+
+        /* Inizio Ricerca */
+        /*--- Inserire misura campo da gioco da collegare con layout ---*/
+        int misuraCampoX;
+        int misuraCampoY;
+
+        /*--- Inserire posizione di partenza robot ---*/
+        int partenzaX;
+        int partenzaY;
+
         while(!c.getSet());
 
         //t.stop();
         //changeIntent(c.getRadius());
 
-        /*recupera le palline
-        while(true) { //da definire fino a quando
-            //metto la palla al centro della visione del robot.
+        /*--- 1. Robot gira su sè stesso per visualizzare il campo e trovare pallina ---*/
+
+        while(true) { /*da definire fino a quando metto la palla al centro della visione del robot.*/
             if(target[0].center.y >= 240) {
                 while(target[0].center.y > 240) {
                     //gira il robot a sx
@@ -100,8 +110,9 @@ public class Prova1 extends AppCompatActivity {
                 }
                 Prelude.trap(() -> ruota_sx.stop());
             }
+
+            /*--- 2. Robot trova la pallina e Robot si dirige verso la pallina ---*/
             //la palla è centrata, vai dritto
-            //come lo fermi quando arriva davanti alla palla?
             Prelude.trap(() -> {
                 ruota_sx.setPower(50);
                 ruota_dx.setPower(50);
@@ -109,8 +120,22 @@ public class Prova1 extends AppCompatActivity {
                 ruota_dx.start();
             });
 
+            /*--- 3. Quando robot si è avvicinato alla pallina chiudere la pinza ---*/
+            //Come si ferma il robot davanti alla pallina?
+
+            /*--- 4. Giransi di 180° verso la pasizione di partenza ---*/
+
+            /*--- 5. Robot si dirige verso la zona sicura ---*/
+
+            /*--- 6. Robot rilascia la pallina nella zona sicura ---*/
+
+            /*--- 7. Robot rimuove la pallina dalla lista dei "Ricercati" ---*/
+
+            /*--- 8. Le palline sono state tutte trovate bloccare il loop ---*/
+
         }*/
 
+        /*--- 9. Ritornare nella coordinata di partenza ---*/
     }
 
     private void tOpenCv(ComMine c){
