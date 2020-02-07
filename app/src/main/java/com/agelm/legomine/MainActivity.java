@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        try {
+        /*try {
             BluetoothConnection conn = new BluetoothConnection("AGELM");
             BluetoothConnection.BluetoothChannel channel = conn.connect();
             ev3 = new EV3(channel);
@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
 
         } catch (IOException e) {
             errorView.setText(e.toString());
-        }
+        }*/
     }
 
     // main program executed by EV3
