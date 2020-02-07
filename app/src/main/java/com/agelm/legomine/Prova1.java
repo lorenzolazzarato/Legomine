@@ -76,6 +76,39 @@ public class Prova1 extends AppCompatActivity {
         t.stop();
         changeIntent(c.getRadius());
 
+        /*recupera le palline
+        while(true) { //da definire fino a quando
+            //metto la palla al centro della visione del robot.
+            if(target[0].center.y >= 240) {
+                while(target[0].center.y > 240) {
+                    //gira il robot a sx
+                    Prelude.trap(() -> {
+                        ruota_dx.setPower(20);
+                        ruota_dx.start();
+                    });
+                }
+                Prelude.trap(() -> ruota_dx.stop());
+            } else {
+                while(target[0].center.y < 240) {
+                    //gira il robot a dx
+                    Prelude.trap(() -> {
+                        ruota_sx.setPower(20);
+                        ruota_sx.start();
+                    });
+                }
+                Prelude.trap(() -> ruota_sx.stop());
+            }
+            //la palla è centrata, vai dritto
+            //come lo fermi quando arriva davanti alla palla?
+            Prelude.trap(() -> {
+                ruota_sx.setPower(50);
+                ruota_dx.setPower(50);
+                ruota_sx.start();
+                ruota_dx.start();
+            });
+
+        }*/
+
     }
 
     private void changeIntent(float radius){
