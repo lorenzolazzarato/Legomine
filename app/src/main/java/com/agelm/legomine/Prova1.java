@@ -2,6 +2,7 @@ package com.agelm.legomine;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Mat;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -102,9 +104,14 @@ public class Prova1 extends AppCompatActivity {
                 Collections.reverse(f);
                 target[0] = f.get(0); // la palla target, quella più vicina
 
+                mOpenCvCameraView.disableView();
+
                 return frame;
             }
         });
+
+        Intent intent = new Intent(this,Finale.class);
+        intent.putExtra("radius",target[0].radius);
 
         /*Abilita la visualizzazione dell'immagine sullo schermo*/
         mOpenCvCameraView.enableView();
