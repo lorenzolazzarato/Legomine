@@ -1,8 +1,11 @@
 package com.agelm.legomine;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -15,6 +18,8 @@ import it.unive.dais.legodroid.lib.comm.BluetoothConnection;
 
 public class ProvaMain extends AppCompatActivity {
 
+    private EV3 ev3=null;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logo);
@@ -24,30 +29,57 @@ public class ProvaMain extends AppCompatActivity {
         }catch (Exception e){
 
         }
-
         setContentView(R.layout.activity_setting);
+    }
 
-        EV3 ev3;
-
+    /*Creazione connessione con il robot*/
+    public void connetti(View view){
         try {
             BluetoothConnection conn = new BluetoothConnection("AGELM");
             BluetoothConnection.BluetoothChannel channel = conn.connect();
             ev3 = new EV3(channel);
 
+            Button b = findViewById(R.id.connettiB);
+            b.setClickable(false);
+            b = findViewById(R.id.avvioB);
+            b.setClickable(true);
+        } catch (IOException e) {
+        }
+    }
+
+    /*Avvio delle prove e controllo inserimento valori nelle EditBox*/
+    public void avvio(View view){
+
+        EditText dx, dy, px, py;
+        dx = findViewById(R.id.dimXTB);
+        dy = findViewById(R.id.dimYTB);
+        px = findViewById(R.id.posXTB);
+        py = findViewById(R.id.posYTB);
+
+        if(contrText(dx) && contrText(dy) && contrText(px) && contrText(py)){
             if(findViewById(R.id.prova1RB).isSelected()){
-                //Prova1 p = new Prova1(ev3);
+                EditText n = findViewById(R.id.numPallineTB);
+                if(contrText(n)){
+                    int dimx = parse(dx), dimy = parse(dy), posx = parse(px), posy = parse(py), num = parse(n);
+                    Intent intent = new Intent(this, Prova1.class);
+                    intent.putExtra("dimx",dimx);
+                    intent.putExtra("dimy",dimy);
+                    intent.putExtra("posx",posx);
+                    intent.putExtra("posy",posy);
+                    intent.putExtra("num",num);
+                    intent.putExtra("Ev3",ev3);
+                    startActivity(intent);
+                }
             }
             else if(findViewById(R.id.prova2RB).isSelected()){
                 Prova2 p = new Prova2(ev3);
             }
             else{
+                EditText c = findViewById(R.id.chiaveTB);
                 Prova3 p = new Prova3  (ev3);
             }
-        } catch (IOException e) {
         }
-
     }
-
 
     public void settingProva1(View view){
         TextView t = findViewById(R.id.numeroPallineTW);
@@ -89,5 +121,25 @@ public class ProvaMain extends AppCompatActivity {
 
         e = findViewById(R.id.chiaveTB);
         e.setEnabled(true);
+    }
+
+    private int parse(EditText e){
+        int i = Integer.parseInt(e.getText().toString());
+        return i;
+    }
+
+    private boolean contrText(EditText e){
+        if(e.getText().equals("")) {
+            e.setError("Campo obbligatorio");
+            return false;
+        }
+        try{
+            int i = Integer.parseInt(e.getText().toString());
+        }catch (Exception ex){
+            e.setError("Il testo inserito deve essere un numero intero positivo");
+            return false;
+        }
+
+        return true;
     }
 }

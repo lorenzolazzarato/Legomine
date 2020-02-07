@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="830dp">
+
+        <TextView
+            android:id="@+id/settingTW"
+            android:layout_width="229dp"
+            android:layout_height="65dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="13dp"
+            android:layout_marginEnd="162dp"
+            android:layout_marginBottom="651dp"
+            android:fontFamily="@font/amaranth_bold"
+            android:text="Risultati"
+            android:textColor="#000000"
+            android:textSize="40sp"
+            android:textStyle="bold" />
+
+        <androidx.gridlayout.widget.GridLayout
+            android:id="@+id/grid"
+            android:layout_width="380dp"
+            android:layout_height="380dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginStart="15dp"/>
+
+        <HorizontalScrollView
+            android:layout_width="380dp"
+            android:layout_height="75dp"
+            android:layout_marginTop="500dp"
+            android:layout_marginStart="15dp">
+
+            <LinearLayout
+                android:id="@+id/layoutFoto"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical" />
+        </HorizontalScrollView>
+
+        <TextView
+            android:id="@+id/puntiTW"
+            android:layout_width="wrap_content"
+            android:layout_height="49dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="600dp"
+            android:fontFamily="@font/amaranth_bold"
+            android:text="Punti ottenuti:"
+            android:textColor="#000000"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/numPuntiTW"
+            android:layout_width="wrap_content"
+            android:layout_height="49dp"
+            android:layout_marginStart="180dp"
+            android:layout_marginTop="600dp"
+            android:fontFamily="@font/amaranth"
+            android:text=""
+            android:textColor="#000000"
+            android:textSize="24sp" />
+        <TextView
+            android:id="@+id/tempoTW"
+            android:layout_width="wrap_content"
+            android:layout_height="49dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="650dp"
+            android:fontFamily="@font/amaranth_bold"
+            android:text="Tempo impiegato:"
+            android:textColor="#000000"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/numTempoTW"
+            android:layout_width="wrap_content"
+            android:layout_height="49dp"
+            android:layout_marginStart="212dp"
+            android:layout_marginTop="650dp"
+            android:fontFamily="@font/amaranth"
+            android:text=""
+            android:textColor="#000000"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/mineTW"
+            android:layout_width="wrap_content"
+            android:layout_height="49dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="700dp"
+            android:fontFamily="@font/amaranth_bold"
+            android:text="Numero mine raccolte:"
+            android:textColor="#000000"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/numMineTW"
+            android:layout_width="wrap_content"
+            android:layout_height="49dp"
+            android:layout_marginStart="260dp"
+            android:layout_marginTop="700dp"
+            android:fontFamily="@font/amaranth"
+            android:text=""
+            android:textColor="#000000"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/settingB"
+            android:layout_width="120dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="750dp"
+            android:backgroundTint="#652B79B7"
+            android:clickable="false"
+            android:onClick="avvio"
+            android:text="Torna a setting"
+            android:textAllCaps="false"
+            android:textColor="#3c4752"
+            android:textSize="21sp" />
+        <Button
+            android:id="@+id/chiudiB"
+            android:layout_width="120dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="270dp"
+            android:layout_marginTop="750dp"
+            android:backgroundTint="#652B79B7"
+            android:clickable="false"
+            android:onClick="avvio"
+            android:text="Esci"
+            android:textAllCaps="false"
+            android:textColor="#3c4752"
+            android:textSize="21sp" />
+
+
+    </RelativeLayout>
+
+</ScrollView>
