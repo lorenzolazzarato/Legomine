@@ -96,8 +96,7 @@ public class Prova1 extends AppCompatActivity {
                     Log.e("ball", String.format("X:%f Y:%f Rad:%f Col:%s", b.center.x, b.center.y, b.radius, b.color));
 
                 }
-                /*ordina le palle per dimensione del raggio, in modo da andare a prendere prima*/
-                /*quella più vicina (si spera)*/
+                /*ordina le palle per dimensione del raggio, in modo da andare a prendere prima quella più vicina (si spera)*/
                 Comparator<Ball> ballComparator = (ball1, ball2) -> (int)(ball1.radius - ball2.radius);
                 f.sort(ballComparator);
                 Collections.reverse(f);
