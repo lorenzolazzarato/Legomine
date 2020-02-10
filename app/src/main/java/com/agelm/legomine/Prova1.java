@@ -45,7 +45,8 @@ public class Prova1 extends AppCompatActivity {
 
         Intent i=getIntent();
 
-        ev3 = (EV3) i.getSerializableExtra("Ev3");
+        Robot r = (Robot) i.getSerializableExtra("Robot");
+        ev3 = r.getBrick();
 
         int x = i.getIntExtra("dimx",12),y  = i.getIntExtra("dimy",12);
 

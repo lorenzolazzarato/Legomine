@@ -20,6 +20,7 @@ import it.unive.dais.legodroid.lib.comm.BluetoothConnection;
 public class Setting extends AppCompatActivity {
 
     private EV3 ev3=null;
+    private Robot r;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +36,7 @@ public class Setting extends AppCompatActivity {
             BluetoothConnection conn = new BluetoothConnection("AGELM");
             BluetoothConnection.BluetoothChannel channel = conn.connect();
             ev3 = new EV3(channel);
+            r = new Robot(ev3);
             Button b = findViewById(R.id.connettiB);
             b.setClickable(false);
             b = findViewById(R.id.avvioB);
@@ -64,7 +66,7 @@ public class Setting extends AppCompatActivity {
                     intent.putExtra("posx",posx);
                     intent.putExtra("posy",posy);
                     intent.putExtra("num",num);
-                    intent.putExtra("Ev3",ev3);
+                    intent.putExtra("Robot",r);
                     startActivity(intent);
                 }
             }
