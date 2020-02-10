@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,35 +17,30 @@ import java.io.IOException;
 import it.unive.dais.legodroid.lib.EV3;
 import it.unive.dais.legodroid.lib.comm.BluetoothConnection;
 
-public class ProvaMain extends AppCompatActivity {
+public class Setting extends AppCompatActivity {
 
     private EV3 ev3=null;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_logo);
-
-        try {
-            Thread.sleep(2000);
-        }catch (Exception e){
-
-        }
         setContentView(R.layout.activity_setting);
     }
 
     /*Creazione connessione con il robot*/
     public void connetti(View view){
-        try {
+        /*try {
             BluetoothConnection conn = new BluetoothConnection("AGELM");
             BluetoothConnection.BluetoothChannel channel = conn.connect();
             ev3 = new EV3(channel);
 
-            Button b = findViewById(R.id.connettiB);
-            b.setClickable(false);
-            b = findViewById(R.id.avvioB);
-            b.setClickable(true);
+
+
         } catch (IOException e) {
-        }
+        }*/
+        Button b = findViewById(R.id.connettiB);
+        b.setClickable(false);
+        b = findViewById(R.id.avvioB);
+        b.setClickable(true);
     }
 
     /*Avvio delle prove e controllo inserimento valori nelle EditBox*/
@@ -57,7 +53,7 @@ public class ProvaMain extends AppCompatActivity {
         py = findViewById(R.id.posYTB);
 
         if(contrText(dx) && contrText(dy) && contrText(px) && contrText(py)){
-            if(findViewById(R.id.prova1RB).isSelected()){
+            if(((RadioButton)findViewById(R.id.prova1RB)).isChecked()){
                 EditText n = findViewById(R.id.numPallineTB);
                 if(contrText(n)){
                     int dimx = parse(dx), dimy = parse(dy), posx = parse(px), posy = parse(py), num = parse(n);
@@ -71,7 +67,7 @@ public class ProvaMain extends AppCompatActivity {
                     startActivity(intent);
                 }
             }
-            else if(findViewById(R.id.prova2RB).isSelected()){
+            else if(((RadioButton)findViewById(R.id.prova2RB)).isChecked()){
                 Prova2 p = new Prova2(ev3);
             }
             else{
@@ -129,7 +125,7 @@ public class ProvaMain extends AppCompatActivity {
     }
 
     private boolean contrText(EditText e){
-        if(e.getText().equals("")) {
+        if(e.getText().toString().compareTo("")==0) {
             e.setError("Campo obbligatorio");
             return false;
         }

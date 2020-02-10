@@ -43,9 +43,9 @@ public class Prova1 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prova1);
 
-        /*ev3 = (EV3) getIntent().getSerializableExtra("Ev3");
+        /*ev3 = (EV3) getIntent().getSerializableExtra("Ev3");*/
 
-        int x = getIntent().getIntExtra("dimx",12),y  = getIntent().getIntExtra("dimy",12);
+        /*int x = getIntent().getIntExtra("dimx",12),y  = getIntent().getIntExtra("dimy",12);
 
         matrice = new ArrayList<>(Collections.nCopies(x*y,0));
 
@@ -73,7 +73,7 @@ public class Prova1 extends AppCompatActivity {
         Thread t = new ThreadOpenCv(mOpenCvCameraView,c);
         t.start();
 
-        while(!c.getSet());
+        //while(!c.getSet());
 
         //t.stop();
         //changeIntent(c.getRadius());
@@ -153,6 +153,10 @@ public class Prova1 extends AppCompatActivity {
                 target[0] = f.get(0); // la palla target, quella più vicina*/
 
                 c.setRadius(10);
+
+                Intent intent = new Intent(Prova1.this, Finale.class);
+                intent.putExtra("radius",c.getRadius());
+                startActivity(intent);
 
                 return frame;
             }
