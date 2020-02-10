@@ -153,6 +153,7 @@ public class Prova1 extends AppCompatActivity {
                 target[0] = f.get(0); // la palla target, quella più vicina*/
 
                 c.setRadius(10);
+                mOpenCvCameraView.disableView();
 
                 Intent intent = new Intent(Prova1.this, Finale.class);
                 intent.putExtra("radius",c.getRadius());
