@@ -70,46 +70,10 @@ public class Prova1 extends AppCompatActivity {
         mOpenCvCameraView = findViewById(R.id.OpenCvView);
         tOpenCv(c);
 
-        Thread t = new ThreadOpenCv(mOpenCvCameraView,c);
+        Thread t = new ThreadOpenCv(mOpenCvCameraView,c, this);
         t.start();
 
-        //while(!c.getSet());
-
-        //t.stop();
         //changeIntent(c.getRadius());
-
-        /*recupera le palline
-        while(true) { //da definire fino a quando
-            //metto la palla al centro della visione del robot.
-            if(target[0].center.y >= 240) {
-                while(target[0].center.y > 240) {
-                    //gira il robot a sx
-                    Prelude.trap(() -> {
-                        ruota_dx.setPower(20);
-                        ruota_dx.start();
-                    });
-                }
-                Prelude.trap(() -> ruota_dx.stop());
-            } else {
-                while(target[0].center.y < 240) {
-                    //gira il robot a dx
-                    Prelude.trap(() -> {
-                        ruota_sx.setPower(20);
-                        ruota_sx.start();
-                    });
-                }
-                Prelude.trap(() -> ruota_sx.stop());
-            }
-            //la palla è centrata, vai dritto
-            //come lo fermi quando arriva davanti alla palla?
-            Prelude.trap(() -> {
-                ruota_sx.setPower(50);
-                ruota_dx.setPower(50);
-                ruota_sx.start();
-                ruota_dx.start();
-            });
-
-        }*/
 
     }
 
@@ -146,18 +110,13 @@ public class Prova1 extends AppCompatActivity {
                     Log.e("ball", String.format("X:%f Y:%f Rad:%f Col:%s", b.center.x, b.center.y, b.radius, b.color));
 
                 }
-                /*ordina le palle per dimensione del raggio, in modo da andare a prendere prima quella più vicina (si spera)
+                /*ordina le palle per dimensione del raggio, in modo da andare a prendere prima quella più vicina (si spera)*/
                 Comparator<Ball> ballComparator = (ball1, ball2) -> (int)(ball1.radius - ball2.radius);
                 f.sort(ballComparator);
                 Collections.reverse(f);
-                target[0] = f.get(0); // la palla target, quella più vicina*/
+                target[0] = f.get(0); // la palla target, quella più vicina
 
-                c.setRadius(10);
-                mOpenCvCameraView.disableView();
-
-                /*Intent intent = new Intent(Prova1.this, Finale.class);
-                intent.putExtra("radius",c.getRadius());
-                startActivity(intent);*/
+                c.setRadius(target[0].radius);
 
                 return frame;
             }
@@ -167,7 +126,7 @@ public class Prova1 extends AppCompatActivity {
         mOpenCvCameraView.enableView();
     }
 
-    private void changeIntent(float radius){
+    public void changeIntent(double radius){
         Intent intent = new Intent(this,Finale.class);
         intent.putExtra("radius",radius);
         startActivity(intent);

@@ -6,10 +6,12 @@ public class ThreadOpenCv extends Thread{
 
     private CameraBridgeViewBase mOpenCvCameraView;
     private ComMine c;
+    private Prova1 p;
 
-    public ThreadOpenCv(CameraBridgeViewBase open, ComMine c){
+    public ThreadOpenCv(CameraBridgeViewBase open, ComMine c, Prova1 p){
         mOpenCvCameraView = open;
         this.c=c;
+        this.p=p;
     }
 
     public void run(){
@@ -22,5 +24,11 @@ public class ThreadOpenCv extends Thread{
         c.setSet(true);
 
         mOpenCvCameraView.disableView();
+        try {
+            Thread.sleep(2000);
+        }catch (Exception e){
+
+        }
+        p.changeIntent(c.getRadius());
     }
 }

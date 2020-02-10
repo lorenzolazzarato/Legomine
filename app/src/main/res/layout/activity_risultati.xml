@@ -23,7 +23,7 @@
             android:textSize="40sp"
             android:textStyle="bold" />
 
-        <androidx.gridlayout.widget.GridLayout
+        <GridLayout
             android:id="@+id/grid"
             android:layout_width="380dp"
             android:layout_height="380dp"
@@ -56,7 +56,7 @@
 
         <TextView
             android:id="@+id/numPuntiTW"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="49dp"
             android:layout_marginStart="180dp"
             android:layout_marginTop="600dp"
@@ -77,7 +77,7 @@
 
         <TextView
             android:id="@+id/numTempoTW"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="49dp"
             android:layout_marginStart="212dp"
             android:layout_marginTop="650dp"
@@ -99,7 +99,7 @@
 
         <TextView
             android:id="@+id/numMineTW"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="49dp"
             android:layout_marginStart="260dp"
             android:layout_marginTop="700dp"
@@ -115,12 +115,13 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="750dp"
             android:backgroundTint="#652B79B7"
-            android:clickable="false"
-            android:onClick="avvio"
+            android:clickable="true"
+            android:onClick="setting"
             android:text="Torna a setting"
             android:textAllCaps="false"
             android:textColor="#3c4752"
             android:textSize="21sp" />
+
         <Button
             android:id="@+id/chiudiB"
             android:layout_width="120dp"
@@ -128,8 +129,8 @@
             android:layout_marginStart="270dp"
             android:layout_marginTop="750dp"
             android:backgroundTint="#652B79B7"
-            android:clickable="false"
-            android:onClick="avvio"
+            android:clickable="true"
+            android:onClick="esci"
             android:text="Esci"
             android:textAllCaps="false"
             android:textColor="#3c4752"

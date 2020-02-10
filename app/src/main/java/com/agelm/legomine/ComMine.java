@@ -1,12 +1,12 @@
 package com.agelm.legomine;
 
 public class ComMine {
-    private float radius=0;
+    private double radius=0;
     private boolean set=false;
 
     public ComMine(){}
 
-    public float getRadius(){
+    public double getRadius(){
         return radius;
     }
 
