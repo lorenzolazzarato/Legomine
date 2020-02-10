@@ -43,16 +43,17 @@ public class Prova1 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prova1);
 
-        /*ev3 = (EV3) getIntent().getSerializableExtra("Ev3");*/
+        Intent i=getIntent();
 
-        /*int x = getIntent().getIntExtra("dimx",12),y  = getIntent().getIntExtra("dimy",12);
+        ev3 = (EV3) i.getSerializableExtra("Ev3");
+
+        int x = i.getIntExtra("dimx",12),y  = i.getIntExtra("dimy",12);
 
         matrice = new ArrayList<>(Collections.nCopies(x*y,0));
 
-        posx = getIntent().getIntExtra("posx",0);
-        posy = getIntent().getIntExtra("posy",0);
-        num = getIntent().getIntExtra("num",0);*/
-
+        posx = i.getIntExtra("posx",0);
+        posy = i.getIntExtra("posy",0);
+        num = i.getIntExtra("num",0);
 
         ComMine c = new ComMine();
 

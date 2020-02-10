@@ -18,16 +18,16 @@ public class Finale extends AppCompatActivity {
         t.setText(""+getIntent().getDoubleExtra("radius",0));
 
         GridLayout g=findViewById(R.id.grid);
+        g.setColumnCount(12);
         Button b;
 
         for(int i=0; i<144; i++){
             b=new Button(this);
-            b.setId(i);
-            b.setText(i);
-            b.setHeight(g.getHeight()/12);
-            b.setWidth(g.getWidth()/12);
+            b.setWidth(100);
+            b.setHeight(100);
+            b.setId(144-i);
+            b.setText(""+i);
             g.addView(b);
-
         }
     }
 

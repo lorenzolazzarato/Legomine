@@ -24,23 +24,24 @@ public class Setting extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+
+        Button b=findViewById(R.id.avvioB);
+        b.setClickable(false);
     }
 
     /*Creazione connessione con il robot*/
     public void connetti(View view){
-        /*try {
+        try {
             BluetoothConnection conn = new BluetoothConnection("AGELM");
             BluetoothConnection.BluetoothChannel channel = conn.connect();
             ev3 = new EV3(channel);
+            Button b = findViewById(R.id.connettiB);
+            b.setClickable(false);
+            b = findViewById(R.id.avvioB);
+            b.setClickable(true);
 
-
-
-        } catch (IOException e) {
-        }*/
-        Button b = findViewById(R.id.connettiB);
-        b.setClickable(false);
-        b = findViewById(R.id.avvioB);
-        b.setClickable(true);
+        } catch (Exception e) {
+        }
     }
 
     /*Avvio delle prove e controllo inserimento valori nelle EditBox*/
