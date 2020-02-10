@@ -19,14 +19,14 @@ public class Finale extends AppCompatActivity {
 
         GridLayout g=findViewById(R.id.grid);
         g.setColumnCount(12);
+        g.setRowCount(12);
         Button b;
 
         for(int i=0; i<144; i++){
             b=new Button(this);
-            b.setWidth(100);
-            b.setHeight(100);
-            b.setId(144-i);
+            b.setId(i);
             b.setText(""+i);
+            b.setClickable(false);
             g.addView(b);
         }
     }

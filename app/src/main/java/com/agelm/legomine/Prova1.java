@@ -75,13 +75,12 @@ public class Prova1 extends AppCompatActivity {
         Thread t = new ThreadOpenCv(mOpenCvCameraView,c, this);
         t.start();
 
-        //changeIntent(c.getRadius());
-
+        try{
+            ev3.run(this::avvioRobot);
+        }catch (Exception e){}
     }
 
     private void tOpenCv(ComMine c){
-        final Ball[] target = new Ball[1];
-
         /*Configura l'elemento della camera*/
         mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
         mOpenCvCameraView.setMaxFrameSize(640, 480);
@@ -116,9 +115,8 @@ public class Prova1 extends AppCompatActivity {
                 Comparator<Ball> ballComparator = (ball1, ball2) -> (int)(ball1.radius - ball2.radius);
                 f.sort(ballComparator);
                 Collections.reverse(f);
-                target[0] = f.get(0); // la palla target, quella più vicina
 
-                c.setRadius(target[0].radius);
+                c.setRadius(f.get(0).radius);
 
                 return frame;
             }
@@ -132,6 +130,25 @@ public class Prova1 extends AppCompatActivity {
         Intent intent = new Intent(this,Finale.class);
         intent.putExtra("radius",radius);
         startActivity(intent);
+    }
+
+
+    private void avvioRobot(EV3.Api api) {
+        ruota_dx = api.getTachoMotor(EV3.OutputPort.B);
+        ruota_sx = api.getTachoMotor(EV3.OutputPort.C);
+        pinza = api.getTachoMotor(EV3.OutputPort.A);
+
+        try{
+            ruota_sx.setPower(75);
+            ruota_dx.setPower(-40);
+            ruota_sx.start();
+            ruota_dx.start();
+
+            Thread.sleep(400);
+
+            ruota_sx.stop();
+            ruota_dx.stop();
+        }catch (Exception e){}
     }
 
 }

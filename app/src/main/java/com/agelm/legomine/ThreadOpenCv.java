@@ -21,8 +21,6 @@ public class ThreadOpenCv extends Thread{
 
         }
 
-        c.setSet(true);
-
         mOpenCvCameraView.disableView();
         try {
             Thread.sleep(2000);

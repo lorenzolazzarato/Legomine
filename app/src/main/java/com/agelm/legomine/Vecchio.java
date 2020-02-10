@@ -83,7 +83,6 @@ public class Vecchio extends AppCompatActivity {
         });
 
 
-
         /*try {
             BluetoothConnection conn = new BluetoothConnection("AGELM");
             BluetoothConnection.BluetoothChannel channel = conn.connect();
