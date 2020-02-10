@@ -25,14 +25,9 @@ import it.unive.dais.legodroid.lib.plugs.TachoMotor;
 import it.unive.dais.legodroid.lib.util.Prelude;
 
 public class Prova1 extends AppCompatActivity {
-
-
-    private EV3 ev3;
-    private TachoMotor ruota_sx;
-    private TachoMotor ruota_dx;
-    private TachoMotor pinza;
-    private int posx, posy, num;
-    private ArrayList<Integer> matrice;
+    private int num;
+    private ComMine c;
+    private Robot r;
 
     private String TAG = "Prova 1";
 
@@ -45,18 +40,16 @@ public class Prova1 extends AppCompatActivity {
 
         Intent i=getIntent();
 
-        Robot r = (Robot) i.getSerializableExtra("Robot");
-        ev3 = r.getBrick();
+        r = (Robot) i.getSerializableExtra("Robot");
 
-        int x = i.getIntExtra("dimx",12),y  = i.getIntExtra("dimy",12);
+        r.setDimx(i.getIntExtra("dimx",12));
+        r.setDimy(i.getIntExtra("dimy",12));
 
-        matrice = new ArrayList<>(Collections.nCopies(x*y,0));
-
-        posx = i.getIntExtra("posx",0);
-        posy = i.getIntExtra("posy",0);
+        r.setX(i.getIntExtra("posx",0));
+        r.setY(i.getIntExtra("posy",0));
         num = i.getIntExtra("num",0);
 
-        ComMine c = new ComMine();
+        c = new ComMine();
 
         final Ball[] target = new Ball[1];
 
@@ -72,11 +65,8 @@ public class Prova1 extends AppCompatActivity {
         mOpenCvCameraView = findViewById(R.id.OpenCvView);
         tOpenCv(c);
 
-        Thread t = new ThreadOpenCv(mOpenCvCameraView,c, this);
-        t.start();
-
         try{
-            ev3.run(this::avvioRobot);
+            r.getBrick().run(this::avvioRobot);
         }catch (Exception e){}
     }
 
@@ -99,26 +89,31 @@ public class Prova1 extends AppCompatActivity {
             @Override
             public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
                 /*Salva il frame corrente su un oggetto Mat, ossia una matrice bitmap*/
-                Mat frame = inputFrame.rgba();
+                try{
+                    Mat frame = inputFrame.rgba();
 
-                BallFinder ballFinder = new BallFinder(frame, true);
-                ballFinder.setViewRatio(0.0f);
-                ballFinder.setMinArea(2000);
-                ballFinder.setOrientation("portrait");
-                ArrayList<Ball> f = ballFinder.findBalls();
+                    BallFinder ballFinder = new BallFinder(frame, true);
+                    ballFinder.setViewRatio(0.0f);
+                    ballFinder.setMinArea(2000);
+                    ballFinder.setOrientation("portrait");
+                    ArrayList<Ball> f = ballFinder.findBalls();
 
-                for (Ball b : f) {
-                    Log.e("ball", String.format("X:%f Y:%f Rad:%f Col:%s", b.center.x, b.center.y, b.radius, b.color));
+                    for (Ball b : f) {
+                        Log.e("ball", String.format("X:%f Y:%f Rad:%f Col:%s", b.center.x, b.center.y, b.radius, b.color));
 
+                    }
+                    /*ordina le palle per dimensione del raggio, in modo da andare a prendere prima quella più vicina (si spera)*/
+                    Comparator<Ball> ballComparator = (ball1, ball2) -> (int)(ball1.radius - ball2.radius);
+                    f.sort(ballComparator);
+                    Collections.reverse(f);
+
+                    c.setRadius(f.get(0).radius);
+
+                    return frame;
+                }catch (Exception e){
+                    c.setRadius(0);
                 }
-                /*ordina le palle per dimensione del raggio, in modo da andare a prendere prima quella più vicina (si spera)*/
-                Comparator<Ball> ballComparator = (ball1, ball2) -> (int)(ball1.radius - ball2.radius);
-                f.sort(ballComparator);
-                Collections.reverse(f);
-
-                c.setRadius(f.get(0).radius);
-
-                return frame;
+                return null;
             }
         });
 
@@ -132,23 +127,27 @@ public class Prova1 extends AppCompatActivity {
         startActivity(intent);
     }
 
-
     private void avvioRobot(EV3.Api api) {
-        ruota_dx = api.getTachoMotor(EV3.OutputPort.B);
-        ruota_sx = api.getTachoMotor(EV3.OutputPort.C);
-        pinza = api.getTachoMotor(EV3.OutputPort.A);
+        TachoMotor ruota_dx = api.getTachoMotor(EV3.OutputPort.B), ruota_sx = api.getTachoMotor(EV3.OutputPort.C),
+                pinza = api.getTachoMotor(EV3.OutputPort.A);
+
+        r.setRuota_dx(ruota_dx);
+        r.setRuota_sx(ruota_sx);
+        r.setPinza(pinza);
 
         try{
-            ruota_sx.setPower(75);
-            ruota_dx.setPower(-40);
-            ruota_sx.start();
-            ruota_dx.start();
-
-            Thread.sleep(400);
-
-            ruota_sx.stop();
-            ruota_dx.stop();
+            pinza.setPower(50);
+            pinza.start();
+            Thread.sleep(1000);
+            pinza.stop();
         }catch (Exception e){}
+
+        Thread t = new ThreadOpenCv(mOpenCvCameraView,c, this, r);
+        t.start();
+    }
+
+    public int getNum(){
+        return num;
     }
 
 }
