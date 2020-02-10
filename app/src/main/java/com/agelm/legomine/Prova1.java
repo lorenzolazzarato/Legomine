@@ -155,9 +155,9 @@ public class Prova1 extends AppCompatActivity {
                 c.setRadius(10);
                 mOpenCvCameraView.disableView();
 
-                Intent intent = new Intent(Prova1.this, Finale.class);
+                /*Intent intent = new Intent(Prova1.this, Finale.class);
                 intent.putExtra("radius",c.getRadius());
-                startActivity(intent);
+                startActivity(intent);*/
 
                 return frame;
             }
