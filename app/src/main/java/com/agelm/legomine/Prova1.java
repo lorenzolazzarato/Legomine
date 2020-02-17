@@ -3,26 +3,25 @@ package com.agelm.legomine;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.OpenCVLoader;
+import org.opencv.android.Utils;
 import org.opencv.core.Mat;
-import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 
 import it.unive.dais.legodroid.lib.EV3;
 import it.unive.dais.legodroid.lib.plugs.TachoMotor;
-import it.unive.dais.legodroid.lib.util.Prelude;
 
 public class Prova1 extends AppCompatActivity {
     private int num;
@@ -108,6 +107,18 @@ public class Prova1 extends AppCompatActivity {
                     Collections.reverse(f);
 
                     c.setRadius(f.get(0).radius);
+                    if(f.get(0).color.compareTo("blue")==0){
+                        c.setC('b');
+                    }else if(f.get(0).color.compareTo("red")==0){
+                        c.setC('r');
+                    }else{
+                        c.setC('g');
+                    }
+
+                    Bitmap img = Bitmap.createBitmap(frame.cols(),frame.rows(),Bitmap.Config.ARGB_8888);
+                    Utils.matToBitmap(frame, img);
+
+                    c.setB(img);
 
                     return frame;
                 }catch (Exception e){
@@ -121,9 +132,16 @@ public class Prova1 extends AppCompatActivity {
         mOpenCvCameraView.enableView();
     }
 
-    public void changeIntent(double radius){
+    public void changeIntent(double tempo, int punti, ArrayList<Cella> m){
         Intent intent = new Intent(this,Finale.class);
-        intent.putExtra("radius",radius);
+        intent.putExtra("tempo",tempo);
+        intent.putExtra("punti",punti);
+        intent.putExtra("mine",num);
+        intent.putExtra("x",r.getDimx());
+        intent.putExtra("y",r.getDimy());
+
+        for(int i=0;i<m.size();i++)
+            intent.putExtra(""+i, m.get(i));
         startActivity(intent);
     }
 
