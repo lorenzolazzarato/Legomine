@@ -6,11 +6,11 @@ import java.io.Serializable;
 
 import it.unive.dais.legodroid.lib.plugs.TachoMotor;
 
-public class Cella implements Serializable {
+public class Cella{
     private int x,y;
     private ComMine c;
     private boolean ball=false, visita=false;
-    private char colore;
+    private String colore;
     private Bitmap b;
 
     public Cella(int x, int y, ComMine c){
@@ -19,36 +19,41 @@ public class Cella implements Serializable {
         this.c=c;
     }
 
-    public boolean vai(boolean ball, TachoMotor sx, TachoMotor dx, int max){
+    public boolean vai(TachoMotor sx, TachoMotor dx, int max){
         int cont=0;
+        boolean flag=false;
+        c.setTempo(c.getTempo()+2500);
+
         try {
-            sx.setPower(50);
-            dx.setPower(50);
+            sx.setPower(25);
+            dx.setPower(25);
             sx.start();
             dx.start();
 
-            while(c.getRadius()<max && cont<100){
-                Thread.sleep(10);
+
+            while(cont<500){
+                Thread.sleep(5);
                 cont++;
+                if(c.getRadius()<=max+4 && c.getRadius()>=max-30)
+                    flag=true;
             }
 
             sx.stop();
             dx.stop();
         }catch (Exception e){}
 
-        if(cont==100)
-            return false;
-        return true;
+        return flag;
     }
 
     public void indietro(TachoMotor sx, TachoMotor dx){
+        c.setTempo(c.getTempo()+2600);
         try {
-            sx.setPower(-50);
-            dx.setPower(-50);
+            sx.setPower(-25);
+            dx.setPower(-25);
             sx.start();
             dx.start();
 
-            Thread.sleep(1000);
+            Thread.sleep(2600);
 
             sx.stop();
             dx.stop();
@@ -56,32 +61,36 @@ public class Cella implements Serializable {
     }
 
     public void gira(boolean ball, TachoMotor dx, TachoMotor sx){
-        if(ball){
+        if(!ball){
             try{
-                sx.setPower(75);
-                dx.setPower(-40);
+                c.setTempo(c.getTempo()+1300);
+
+                sx.setPower(25);
+                dx.setPower(-10);
                 sx.start();
                 dx.start();
 
-                Thread.sleep(400);
+                Thread.sleep(1300);
+
+                sx.stop();
+                dx.stop();
+            }catch (Exception e){}
+        }else{
+            try{
+                c.setTempo(c.getTempo()+1300);
+
+                sx.setPower(30);
+                dx.setPower(-20);
+                sx.start();
+                dx.start();
+
+                Thread.sleep(1300);
 
                 sx.stop();
                 dx.stop();
             }catch (Exception e){}
         }
-        else{
-            try{
-                sx.setPower(50);
-                dx.setPower(-30);
-                sx.start();
-                dx.start();
 
-                Thread.sleep(500);
-
-                sx.stop();
-                dx.stop();
-            }catch (Exception e){}
-        }
     }
 
     public void setBall(){
@@ -100,11 +109,11 @@ public class Cella implements Serializable {
         return visita;
     }
 
-    public void setColore(char c){
+    public void setColore(String c){
         this.colore=c;
     }
 
-    public char getColore(){
+    public String getColore(){
         return colore;
     }
 

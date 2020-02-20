@@ -29,7 +29,6 @@ public class ThreadOpenCv extends Thread{
         boolean visita=false;
         int num=p.getNum(),x =r.getX(),y=r.getY(),start, i,trasl, punti=0;
         ArrayList<Cella> matrice = new ArrayList<>();
-        Thread t =new Timer(c);
 
         if(x==0 && y!=0){
             matrice=inserisci(false,r.getDimy()-1,0,-1);
@@ -37,11 +36,11 @@ public class ThreadOpenCv extends Thread{
             trasl=r.getDimy();
         }else if(y==0 && (x+1)!=r.getDimx()){
             matrice=inserisci(true,0,0,1);
-            start=0+x;
+            start=x;
             trasl=r.getDimx();
         }else if((x+1)==r.getDimx() && (y+1)!=r.getDimy()){
             matrice=inserisci(false,r.getDimx()-1,0,1);
-            start=0+y;
+            start=y;
             trasl=r.getDimy();
         }else{
             matrice=inserisci(true,r.getDimy()-1,r.getDimx()-1,-1);
@@ -49,29 +48,29 @@ public class ThreadOpenCv extends Thread{
             trasl=r.getDimx();
         }
 
-        t.run();
+        matrice.get(start).vai(sx,dx,max);
 
-        matrice.get(start).vai(false,sx,dx,max);
         matrice.get(start).gira(false, dx,sx);
         matrice.get(start).setVisita();
         i=start;
 
         while(num>0){
             if(!visita){
-                if(((i+1/trasl)%2==0 && (i+1)%trasl==0)||((i/trasl)%2==0 && (i)%trasl==0)){
+                if(i!=start && (((i+1)/trasl)%2!=0 && (i+1)%trasl==0) || ((i/trasl)%2!=0 && i%trasl==0)){
                     matrice.get(i).gira(false,sx,dx);
-                }else if(((i+1/trasl)%2!=0 && (i+1)%trasl==0)||((i/trasl)%2!=0 && (i)%trasl==0)){
+                }else if((((i+1)/trasl)%2==0 && (i+1)%trasl==0 && i!=start)||((i/trasl)%2==0 && i%trasl==0 && i!=start)){
                     matrice.get(i).gira(false,dx,sx);
                 }
 
-                if(matrice.get(i).vai(false, dx, sx, max)){
+                if(matrice.get(i).vai(dx, sx, max)){
+                    mOpenCvCameraView.disableView();
                     matrice.get(i).setVisita();
                     matrice.get(i+1).setBall();
                     matrice.get(i+1).setColore(c.getC());
 
-                    if(matrice.get(i+1).getColore()=='r')
+                    if(matrice.get(i+1).getColore().compareTo("red")==0)
                         punti+=1;
-                    else if(matrice.get(i+1).getColore()=='b')
+                    else if(matrice.get(i+1).getColore().compareTo("blue")==0)
                         punti+=2;
                     else
                         punti+=3;
@@ -79,9 +78,9 @@ public class ThreadOpenCv extends Thread{
                     matrice.get(i+1).setB(c.getB());
 
                     chiudiPinza(pz);
-                    if((i+1/trasl)%2==0 && (i+1)%trasl==0){
+                    if(((i+1)/trasl)%2!=0 && (i+1)%trasl==0){
                         matrice.get(i).gira(true,dx,sx);
-                    }else if((i+1/trasl)%2!=0 && (i+1)%trasl==0){
+                    }else if(((i+1)/trasl)%2==0 && (i+1)%trasl==0){
                         matrice.get(i).gira(true,sx,dx);
                     }
                     else{
@@ -90,11 +89,17 @@ public class ThreadOpenCv extends Thread{
                         matrice.get(i+1).gira(true,dx,sx);
                     }
                     tornaStart(i+1, start, matrice, trasl);
+                    mOpenCvCameraView.enableView();
+                    i=start;
+                    c.setRadius(0);
                     num--;
+                }else {
+                    i++;
+                    matrice.get(i).setVisita();
                 }
             }else {
                 matrice.get(i).gira(false,sx,dx);
-                while(!matrice.get(i).vai(false,dx,sx,max)){
+                while(!matrice.get(i).vai(dx,sx,max)){
                     i--;
                 }
                 chiudiPinza(pz);
@@ -102,9 +107,9 @@ public class ThreadOpenCv extends Thread{
                 matrice.get(i+1).setBall();
                 matrice.get(i+1).setColore(c.getC());
 
-                if(matrice.get(i+1).getColore()=='r')
+                if(matrice.get(i+1).getColore().compareTo("red")==0)
                     punti+=1;
-                else if(matrice.get(i+1).getColore()=='b')
+                else if(matrice.get(i+1).getColore().compareTo("blue")==0)
                     punti+=2;
                 else
                     punti+=3;
@@ -113,15 +118,15 @@ public class ThreadOpenCv extends Thread{
 
                 matrice.get(i+1).gira(true, dx,sx);
                 matrice.get(i+1).gira(true, dx,sx);
-                matrice.get(i+1).vai(true, sx,dx,max);
+                matrice.get(i+1).vai(sx,dx,max);
 
                 while (i!=start){
-                    matrice.get(i).vai(true, sx,dx,max);
+                    matrice.get(i).vai(sx,dx,max);
                     i++;
                 }
 
                 matrice.get(i).gira(true,dx,sx);
-                matrice.get(i).vai(true, sx,dx,max);
+                matrice.get(i).vai(sx,dx,max);
                 apriPinza(pz);
                 matrice.get(i).indietro(sx,dx);
                 matrice.get(i).gira(false,sx,dx);
@@ -141,47 +146,49 @@ public class ThreadOpenCv extends Thread{
 
         }
 
-        p.changeIntent(c.getTime(),punti,matrice);
+        p.changeIntent(punti,matrice);
 
     }
 
     private void chiudiPinza(TachoMotor pinza){
+        c.setTempo(c.getTempo()+400);
         try{
             pinza.setPower(-50);
             pinza.start();
-            Thread.sleep(500);
+            Thread.sleep(400);
             pinza.stop();
         }catch (Exception e){}
     }
 
     private void apriPinza(TachoMotor pinza){
+        c.setTempo(c.getTempo()+400);
         try{
             pinza.setPower(50);
             pinza.start();
-            Thread.sleep(500);
+            Thread.sleep(400);
             pinza.stop();
         }catch (Exception e){}
     }
 
     private void tornaStart(int i, int start, ArrayList<Cella> m, int trasl){
         while(i!=start){
-            if((i/trasl)%2==0 && i%trasl==0){
+            if((i/trasl)%2!=0 && i%trasl==0){
                 m.get(i).gira(true, dx,sx);
-                m.get(i).vai(true, sx,dx,max);
+                m.get(i).vai(sx,dx,max);
                 i--;
                 m.get(i).gira(true, dx,sx);
-            }else if((i/trasl)%2!=0 && i%trasl==0){
+            }else if((i/trasl)%2==0 && i%trasl==0){
                 m.get(i).gira(true, sx,dx);
-                m.get(i).vai(true, sx,dx,max);
+                m.get(i).vai(sx,dx,max);
                 i--;
                 m.get(i).gira(true, sx,dx);
             }else{
-                m.get(i).vai(true,sx,dx,max);
+                m.get(i).vai(sx,dx,max);
                 i--;
             }
         }
         m.get(i).gira(true, sx,dx);
-        m.get(i).vai(true,sx,dx,max);
+        m.get(i).vai(sx,dx,max);
         apriPinza(pz);
 
         m.get(i).indietro(dx,sx);
@@ -201,7 +208,7 @@ public class ThreadOpenCv extends Thread{
                     num=num*(-1);
                     j+=num2;
                 }
-                if(i==0){
+                if(i<0){
                     i-=num;
                     num=num*(-1);
                     j+=num2;

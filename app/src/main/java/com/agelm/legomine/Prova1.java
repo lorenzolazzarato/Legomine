@@ -2,9 +2,12 @@ package com.agelm.legomine;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.WindowManager;
@@ -14,11 +17,13 @@ import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 
-import java.text.SimpleDateFormat;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 
 import it.unive.dais.legodroid.lib.EV3;
 import it.unive.dais.legodroid.lib.plugs.TachoMotor;
@@ -88,8 +93,9 @@ public class Prova1 extends AppCompatActivity {
             @Override
             public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
                 /*Salva il frame corrente su un oggetto Mat, ossia una matrice bitmap*/
+
+                Mat frame = inputFrame.rgba();
                 try{
-                    Mat frame = inputFrame.rgba();
 
                     BallFinder ballFinder = new BallFinder(frame, true);
                     ballFinder.setViewRatio(0.0f);
@@ -107,24 +113,16 @@ public class Prova1 extends AppCompatActivity {
                     Collections.reverse(f);
 
                     c.setRadius(f.get(0).radius);
-                    if(f.get(0).color.compareTo("blue")==0){
-                        c.setC('b');
-                    }else if(f.get(0).color.compareTo("red")==0){
-                        c.setC('r');
-                    }else{
-                        c.setC('g');
-                    }
+                    c.setC(f.get(0).color);
 
                     Bitmap img = Bitmap.createBitmap(frame.cols(),frame.rows(),Bitmap.Config.ARGB_8888);
                     Utils.matToBitmap(frame, img);
 
                     c.setB(img);
-
-                    return frame;
                 }catch (Exception e){
                     c.setRadius(0);
                 }
-                return null;
+                return frame;
             }
         });
 
@@ -132,17 +130,57 @@ public class Prova1 extends AppCompatActivity {
         mOpenCvCameraView.enableView();
     }
 
-    public void changeIntent(double tempo, int punti, ArrayList<Cella> m){
+    public void changeIntent(int punti, ArrayList<Cella> m){
+        ArrayList<Integer> x = new ArrayList<>(), y=new ArrayList<>();
+        ArrayList<String> colore=new ArrayList<>(), bitmap = new ArrayList<>();
+        int j=0;
+
         Intent intent = new Intent(this,Finale.class);
-        intent.putExtra("tempo",tempo);
+        intent.putExtra("tempo",c.getTempo());
         intent.putExtra("punti",punti);
         intent.putExtra("mine",num);
-        intent.putExtra("x",r.getDimx());
-        intent.putExtra("y",r.getDimy());
+        intent.putExtra("dimx",r.getDimx());
+        intent.putExtra("dimy",r.getDimy());
 
         for(int i=0;i<m.size();i++)
-            intent.putExtra(""+i, m.get(i));
+            if(m.get(i).isBall()){
+                x.add(m.get(i).getX());
+                y.add(m.get(i).getY());
+                colore.add(m.get(i).getColore());
+                bitmap.add(saveToInternalStorage(m.get(i).getB(),"Image"+j));
+                j++;
+            }
+
+        intent.putExtra("x",x);
+        intent.putExtra("y",y);
+        intent.putExtra("colore",colore);
+        intent.putExtra("bitmap",bitmap);
+
         startActivity(intent);
+    }
+
+    private String saveToInternalStorage(Bitmap bitmapImage, String fileName){
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        // path to /data/data/yourapp/app_data/imageDir
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        // Create imageDir
+        File mypath=new File(directory,fileName+".jpg");
+
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(mypath);
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return directory.getAbsolutePath();
     }
 
     private void avvioRobot(EV3.Api api) {
@@ -152,13 +190,6 @@ public class Prova1 extends AppCompatActivity {
         r.setRuota_dx(ruota_dx);
         r.setRuota_sx(ruota_sx);
         r.setPinza(pinza);
-
-        try{
-            pinza.setPower(50);
-            pinza.start();
-            Thread.sleep(1000);
-            pinza.stop();
-        }catch (Exception e){}
 
         Thread t = new ThreadOpenCv(mOpenCvCameraView,c, this, r);
         t.start();

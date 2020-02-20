@@ -4,10 +4,13 @@ import android.graphics.Bitmap;
 
 public class ComMine {
     private double radius=0, time=0;
-    private char c;
+    private String c;
     private Bitmap b;
+    private double tempo;
 
-    public ComMine(){}
+    public ComMine(){
+        tempo=0;
+    }
 
     public double getRadius(){
         return radius;
@@ -17,11 +20,11 @@ public class ComMine {
         this.radius=radius;
     }
 
-    public void setC(char c){
+    public void setC(String c){
         this.c=c;
     }
 
-    public char getC(){
+    public String getC(){
         return c;
     }
 
@@ -39,5 +42,13 @@ public class ComMine {
 
     public Bitmap getB(){
         return b;
+    }
+
+    public void  setTempo(Double t){
+        tempo=t;
+    }
+
+    public Double getTempo(){
+        return tempo;
     }
 }
